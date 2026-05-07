@@ -3,302 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acquisition Protocol | ECCENCE</title>
+    <title>ECCENCE | High-Value Fragrance Specialist</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        gold: '#d4af37',
-                        burgundy: '#1a0505',
-                    }
-                }
-            }
-        }
-    </script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="vault.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Montserrat:wght@100;300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Montserrat:wght@100;300;600&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #d4af37; --gold-soft: #c5a028; --deep-burgundy: #1a0505; --panel-burgundy: #250808; --glass: rgba(255, 255, 255, 0.03); --cream: #fdf5e6; }
-        body { background-color: var(--deep-burgundy); color: var(--cream); font-family: 'Montserrat', sans-serif; }
+        :root { --rose-gold: #e5b0a3; --deep-burgundy: #1a0101; }
+        body { background-color: var(--deep-burgundy); color: white; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
         .luxury-font { font-family: 'Cormorant Garamond', serif; }
         
-        .shopify-input { 
-            background: rgba(255,255,255,0.02); 
-            border: 1px solid rgba(212, 175, 55, 0.1); 
-            border-radius: 2px; 
-            padding: 14px; 
-            width: 100%; 
-            font-size: 13px; 
-            color: var(--cream);
-            outline: none; 
-            transition: 0.3s; 
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 3px; }
+        ::-webkit-scrollbar-track { background: var(--deep-burgundy); }
+        ::-webkit-scrollbar-thumb { background: var(--rose-gold); }
+
+        /* ANIMATIONS */
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .shopify-input:focus { border-color: var(--gold); background: rgba(212, 175, 55, 0.05); }
-        .shopify-input::placeholder { color: rgba(253, 245, 230, 0.2); }
- 
-        .section-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-style: italic; margin-bottom: 20px; margin-top: 40px; color: var(--gold); }
-        
-        .summary-side { background: var(--panel-burgundy); backdrop-filter: blur(20px); border-left: 1px solid rgba(212, 175, 55, 0.05); min-height: 100vh; }
-        
-        .btn-premium { 
-            background: var(--gold); 
-            border: 1px solid var(--gold); 
-            color: var(--deep-burgundy); 
-            padding: 20px; 
-            font-size: 12px; 
-            letter-spacing: 4px; 
-            text-transform: uppercase; 
-            width: 100%; 
-            transition: 0.5s; 
+        .reveal { animation: slideUpFade 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            position: relative;
+            overflow: hidden;
             cursor: pointer;
-            font-weight: 600;
         }
-        .btn-premium:hover { background: transparent; color: var(--gold); }
+        .glass-card:hover { 
+            background: rgba(255, 255, 255, 0.07); 
+            transform: translateY(-12px); 
+            border-color: var(--rose-gold); 
+        }
+
+        /* Shine Sweep Effect */
+        .glass-card::after {
+            content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(229, 176, 163, 0.15), transparent);
+            transform: skewX(-20deg); transition: 0.8s;
+        }
+        .glass-card:hover::after { left: 150%; }
+
+        .btn-main {
+            background: transparent; border: 1px solid rgba(229, 176, 163, 0.4);
+            color: var(--rose-gold); padding: 14px; font-size: 10px;
+            letter-spacing: 4px; text-transform: uppercase; transition: 0.5s;
+        }
+        .btn-main:hover { background: var(--rose-gold); color: black; box-shadow: 0 0 20px rgba(229, 176, 163, 0.2); }
+
+        .variant-btn {
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 16px; font-size: 10px; transition: 0.3s;
+        }
+        .variant-btn.active { border-color: var(--rose-gold); color: var(--rose-gold); background: rgba(229, 176, 163, 0.05); }
+
+        /* MODAL ANIMATION */
+        #product-modal.hidden { display: none; }
+        #product-modal-content { transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+        .modal-open #product-modal-content { transform: scale(1); opacity: 1; }
         
-        .discount-btn { 
-            background: transparent; 
-            border: 1px solid rgba(212, 175, 55, 0.3); 
-            padding: 12px 24px; 
-            border-radius: 2px; 
-            font-size: 10px; 
-            letter-spacing: 2px; 
-            color: var(--gold); 
-            text-transform: uppercase; 
-            transition: 0.3s;
-        }
-        .discount-btn:hover { background: var(--gold); color: var(--deep-burgundy); }
-        
-        select.shopify-input { appearance: none; background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; }
- 
-        .payment-card {
-            padding: 32px;
-            border: 1px solid rgba(212, 175, 55, 0.1);
-            border-radius: 2px;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            background: rgba(255, 255, 255, 0.01);
-        }
-        .payment-card:hover { border-color: rgba(212, 175, 55, 0.4); }
-        .payment-card.active {
-            border-color: var(--gold);
-            background: rgba(212, 175, 55, 0.08);
-        }
+        .price-old { font-size: 0.8em; color: #ff9d9d; text-decoration: line-through; opacity: 0.5; margin-left: 10px; }
     </style>
 </head>
-<body class="min-h-screen">
+<body>
 
-    <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row">
-        
-        <!-- LEFT SIDE: FORMS -->
-        <div class="w-full md:w-[60%] p-8 md:p-20">
-            <h1 class="luxury-font text-4xl tracking-[0.5em] mb-16 cursor-pointer" onclick="window.location.href='index.html'">ECCENCE</h1>
+    <nav class="fixed w-full z-[100] border-b border-white/5 px-8 py-6 flex justify-between items-center bg-[#1a0101]/90 backdrop-blur-xl">
+        <h1 class="luxury-font text-3xl tracking-[0.5em] cursor-pointer" onclick="window.location.reload()">ECCENCE</h1>
+        <div class="relative cursor-pointer text-rose-gold" onclick="toggleCart()">
+            <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+            <span id="cart-badge" class="absolxxute -top-3 -right-3 bg-white text-black text-[9px] font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-20">
+        <section class="px-6 md:px-24">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20">
+                <div>
+                    <p class="text-rose-gold text-[10px] tracking-[0.8em] uppercase mb-4 opacity-70">Curated Archive</p>
+                    <h2 class="luxury-font text-7xl italic reveal">The Vault</h2>
+                </div>
+                <div class="flex gap-8 text-[10px] uppercase tracking-widest opacity-40 py-2">
+                    <button onclick="filterG('All')" class="hover:text-rose-gold transition">All</button>
+                    <button onclick="filterG('Men')" class="hover:text-rose-gold transition">Men</button>
+                    <button onclick="filterG('Women')" class="hover:text-rose-gold transition">Women</button>
+                </div>
+            </div>
+
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                </div>
+        </section>
+    </main>
+
+    <div id="product-modal" class="fixed inset-0 z-[300] hidden flex items-center justify-center p-6">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="closeModal()"></div>
+        <div id="product-modal-content" class="relative w-full max-w-4xl bg-[#0d0101] border border-white/10 p-12 flex flex-col md:flex-row gap-12 opacity-0 scale-95 transition-all">
+            <button onclick="closeModal()" class="absolute top-6 right-6 opacity-30 hover:opacity-100"><i data-lucide="x"></i></button>
             
-            <!-- CONTACT -->
-            <div class="reveal">
-                <div class="flex justify-between items-baseline mb-6">
-                    <h2 class="section-title">Contact</h2>
-                    <a href="#" class="text-[10px] tracking-widest text-gold uppercase opacity-50 hover:opacity-100">Vault Login</a>
-                </div>
-                <input type="email" id="email" placeholder="Identity (Email)" class="shopify-input mb-4">
-                <label class="flex items-center gap-4 text-[10px] tracking-widest uppercase opacity-40 cursor-pointer hover:opacity-70">
-                    <input type="checkbox" checked class="w-3 h-3 border-white/20 bg-transparent">
-                    Subscribe to The Scent Journal
-                </label>
+            <div class="w-full md:w-1/2 flex items-center justify-center bg-white/5 p-10">
+                <img id="modal-img" src="" class="max-h-96 object-contain drop-shadow-2xl">
             </div>
 
-            <!-- DELIVERY -->
-            <div class="mt-16 reveal">
-                <h2 class="section-title">Delivery Protocol</h2>
-                <div class="space-y-4">
-                    <select id="country" class="shopify-input">
-                        <option value="Egypt">Egypt</option>
-                    </select>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="text" id="first-name" placeholder="First Name" class="shopify-input">
-                        <input type="text" id="last-name" placeholder="Last Name" class="shopify-input">
-                    </div>
-
-                    <input type="text" id="address" placeholder="Shipping Coordinates (Address)" class="shopify-input">
-                    <input type="text" id="apartment" placeholder="Apartment, suite, etc." class="shopify-input">
-
-                    <div class="grid grid-cols-3 gap-4">
-                        <input type="text" id="city" placeholder="City" class="shopify-input">
-                        <select id="governorate" class="shopify-input">
-                            <option value="Cairo">Cairo</option>
-                            <option value="Giza">Giza</option>
-                            <option value="Alexandria">Alexandria</option>
-                        </select>
-                        <input type="text" id="postal-code" placeholder="Zip (Optional)" class="shopify-input">
-                    </div>
-
-                    <div class="relative">
-                        <input type="tel" id="phone" placeholder="Contact Channel (Phone)" class="shopify-input">
-                        <i data-lucide="phone" class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 opacity-20"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PAYMENT -->
-            <div class="mt-20 pt-10 border-t border-white/5 reveal">
-                <h2 class="section-title">Payment Channel</h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-                    <div class="payment-card" id="card-vodafone" onclick="selectPayment('vodafone')">
-                        <h4 class="luxury-font text-2xl italic mb-2">Vodafone Wallet</h4>
-                        <p class="text-[10px] tracking-widest text-gold opacity-70">Transfer to: 01004268823</p>
-                    </div>
-                    <div class="payment-card" id="card-telda" onclick="selectPayment('telda')">
-                        <h4 class="luxury-font text-2xl italic mb-2">Telda</h4>
-                        <p class="text-[10px] tracking-widest text-gold opacity-70">Username: @soly5656</p>
+            <div class="w-full md:w-1/2 space-y-8">
+                <div>
+                    <p id="modal-gender" class="text-[9px] tracking-[0.4em] text-rose-gold uppercase mb-2"></p>
+                    <h3 id="modal-name" class="luxury-font text-5xl italic mb-4"></h3>
+                    <div class="flex items-baseline">
+                        <span id="modal-price" class="text-2xl text-rose-gold font-light"></span>
+                        <span id="modal-old" class="price-old text-lg"></span>
                     </div>
                 </div>
 
-                <div id="payment-instructions" class="hidden mb-8 p-6 border border-gold/20 bg-gold/5 text-[10px] tracking-widest uppercase leading-loose opacity-70"></div>
+                <div id="modal-variants-container" class="space-y-4">
+                    <p class="text-[9px] uppercase tracking-[0.3em] opacity-40">Select Volume</p>
+                    <div id="modal-variants" class="flex gap-4"></div>
+                </div>
 
-                <button id="finalize-btn" onclick="finalizeOrder()" class="btn-premium">Finalize Acquisition</button>
-                
-                <div class="flex justify-center gap-8 mt-12 opacity-20">
-                    <div class="flex items-center gap-2 text-[8px] tracking-[0.3em] uppercase"><i data-lucide="shield-check" class="w-3 h-3"></i> SSL SECURE</div>
-                    <div class="flex items-center gap-2 text-[8px] tracking-[0.3em] uppercase"><i data-lucide="lock" class="w-3 h-3"></i> AES-256</div>
+                <div class="space-y-6 pt-6 border-t border-white/5">
+                    <div class="flex items-center justify-between border border-white/10 p-4">
+                        <button class="px-6" onclick="updateModalQty(-1)">-</button>
+                        <span id="modal-qty" class="text-sm">1</span>
+                        <button class="px-6" onclick="updateModalQty(1)">+</button>
+                    </div>
+                    <button onclick="addCurrentToBag()" class="btn-main w-full py-6">Add to Acquisition</button>
+                    <button class="w-full py-4 text-[9px] uppercase tracking-[0.4em] opacity-30">Immediate Checkout</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- RIGHT SIDE: SUMMARY -->
-        <div class="w-full md:w-[40%] summary-side p-8 md:p-20">
-            <h3 class="luxury-font text-4xl italic mb-12">Archive Summary</h3>
-            <div id="summary-items" class="space-y-10 mb-12">
-                <!-- Items populated by JS -->
-            </div>
-
-            <!-- DISCOUNT -->
-            <div class="flex gap-4 mb-12">
-                <input type="text" placeholder="Promotion Protocol" class="shopify-input">
-                <button class="discount-btn">Apply</button>
-            </div>
-
-            <!-- TOTALS -->
-            <div class="space-y-4 text-[10px] tracking-[0.2em] uppercase border-t border-white/10 pt-10">
-                <div class="flex justify-between opacity-40">
-                    <span>Subtotal</span>
-                    <span id="subtotal">0 EGP</span>
-                </div>
-                <div class="flex justify-between items-center opacity-40">
-                    <span>Shipping Protocol</span>
-                    <span>Complimentary</span>
-                </div>
-                <div class="flex justify-between items-baseline pt-6">
-                    <span class="luxury-font text-3xl italic normal-case tracking-normal text-gold">Total Value</span>
-                    <div class="text-right">
-                        <span id="total" class="text-4xl text-gold italic">0 EGP</span>
-                    </div>
-                </div>
-            </div>
+    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full md:w-[480px] bg-[#0a0101] z-[400] translate-x-full transition-transform duration-700 p-12 flex flex-col border-l border-white/10">
+        <div class="flex justify-between items-center mb-16">
+            <h4 class="luxury-font text-4xl italic">Acquisitions</h4>
+            <button onclick="toggleCart()" class="opacity-20 hover:opacity-100"><i data-lucide="x"></i></button>
         </div>
-
+        <div id="cart-items" class="flex-grow overflow-y-auto space-y-8"></div>
+        <div class="pt-10 border-t border-white/10 space-y-6">
+            <div class="flex justify-between uppercase tracking-[0.2em] text-xs">
+                <span class="opacity-40">Total Value</span>
+                <span id="cart-total" class="text-rose-gold text-xl">0 EGP</span>
+            </div>
+            <button class="w-full py-6 bg-white text-black font-bold uppercase text-[11px] tracking-[0.4em] hover:bg-rose-gold transition-all duration-500">Checkout</button>
+        </div>
     </div>
 
     <script>
-        let selectedMethod = null;
+        const inventory = [
+            { id: 1, name: "YSL MYSLF", gender: "Men", file: "MYSLF Le Parfum - Men's Spicy Vanilla Fragrance - YSL Beauty.jpg", 
+                variants: [ {size: "60ml", price: 1000, old: 1400}, {size: "100ml", price: 1400, old: 1900} ] },
+            { id: 2, name: "YSL Y EDP", gender: "Men", file: "Ysl.JPG", 
+                variants: [ {size: "100ml", price: 1200, old: 1650}, {size: "200ml", price: 2100, old: 2800} ] },
+            { id: 3, name: "LV Imagination", gender: "Men", file: "LouisVuittonimagination.JPG", price: 4800, old: 5600 },
+            { id: 4, name: "LV Pacific Chill", gender: "Men", file: "LouisVuittonPacificchill.JPG", price: 4800, old: 5600 },
+            { id: 5, name: "Dark Verse", gender: "Women", file: "Luna Caine ✩ Dark Verse.webp", price: 1350, old: 1800 },
+            { id: 6, name: "PDM Delina Exclusif", gender: "Women", file: "pdm dalida.webp", price: 5800, old: 7200 },
+            { id: 7, name: "YSL Libre Intense", gender: "Women", file: "Libre Eau de Parfum Intense Women's Perfume _ YSL Beauty.webp", price: 2400, old: 3100 },
+            { id: 8, name: "Valentino Born Roma", gender: "Women", file: "valnteino born in rome intense wommen.jpg", price: 2100, old: 2750 },
+            { id: 9, name: "YSL Babycat", gender: "Men", file: "Yves Saint Laurent Babycat Eau de Parfum _ Nordstrom.jpg", price: 5500, old: 6500 },
+            { id: 10, name: "ADG Profondo", gender: "Men", file: "aqua di gio.jpg", price: 1800, old: 2400 },
+            { id: 11, name: "Creed Aventus", gender: "Men", file: "Creedaventos.JPG", price: 7500, old: 9000 },
+            { id: 12, name: "Lattafa Asad", gender: "Men", file: "Lattafa Perfumes Asad for Unisex Eau de Parfum Spray, 3_4 Ounce.jpg", price: 950, old: 1300 }
+        ];
 
-        function selectPayment(method) {
-            selectedMethod = method;
-            document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('active'));
-            document.getElementById('card-' + method).classList.add('active');
-            const instructions = document.getElementById('payment-instructions');
-            instructions.classList.remove('hidden');
-            if (method === 'vodafone') {
-                instructions.innerText = 'Send your total to Vodafone Wallet: 01004268823 — then click Finalize Acquisition below.';
-            } else {
-                instructions.innerText = 'Send your total to Telda: @soly5656 — then click Finalize Acquisition below.';
-            }
-        }
+        let cart = [];
+        let currentSelectedProduct = null;
+        let currentSelectedSize = null;
 
-        function renderSummary() {
-            const cart = getCart();
-            const container = document.getElementById('summary-items');
-            container.innerHTML = cart.map(item => `
-                <div class="flex justify-between items-center gap-8">
-                    <div class="relative">
-                        <div class="w-20 h-20 bg-white/5 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center p-3">
-                            <img src="${item.file}" class="max-h-full max-w-full object-contain drop-shadow-xl">
-                        </div>
-                        <span class="absolute -top-3 -right-3 bg-gold text-black text-[9px] w-6 h-6 rounded-full flex items-center justify-center font-bold">1</span>
+        function renderProducts(items) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = items.map((p, idx) => `
+                <div class="glass-card p-10 flex flex-col h-full reveal" style="animation-delay: ${idx * 0.05}s" onclick="openModal(${p.id})">
+                    <div class="h-64 flex items-center justify-center mb-8">
+                        <img src="${p.file}" class="max-h-full object-contain drop-shadow-2xl">
                     </div>
-                    <div class="flex-grow">
-                        <h4 class="luxury-font text-2xl italic">${item.name}</h4>
-                        <p class="text-[8px] tracking-widest uppercase opacity-30 mt-1">High-Concentration Extract</p>
+                    <div class="space-y-2">
+                        <h4 class="luxury-font text-2xl tracking-wide italic">${p.name}</h4>
+                        <p class="text-rose-gold font-light tracking-widest">${p.variants ? p.variants[0].price : p.price} EGP</p>
                     </div>
-                    <span class="text-gold italic text-lg">${item.price} EGP</span>
                 </div>
             `).join('');
-
-            const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
-            document.getElementById('subtotal').innerText = `${subtotal} EGP`;
-            document.getElementById('total').innerText = `${subtotal} EGP`;
         }
 
-        async function finalizeOrder() {
-            const btn = document.getElementById('finalize-btn');
-            const originalText = btn.innerText;
-            btn.innerText = "Authenticating Protocol...";
-            btn.disabled = true;
+        function openModal(id) {
+            const p = inventory.find(x => x.id === id);
+            currentSelectedProduct = p;
+            currentSelectedSize = p.variants ? p.variants[0] : { size: 'Standard', price: p.price, old: p.old };
+            
+            document.getElementById('modal-img').src = p.file;
+            document.getElementById('modal-name').innerText = p.name;
+            document.getElementById('modal-gender').innerText = p.gender;
+            updateModalPricing();
 
-            const cart = getCart();
-            const orderData = {
-                email: document.getElementById('email').value,
-                firstName: document.getElementById('first-name').value,
-                lastName: document.getElementById('last-name').value,
-                address: document.getElementById('address').value,
-                city: document.getElementById('city').value,
-                phone: document.getElementById('phone').value,
-                items: cart.map(i => i.name).join(', '),
-                total: document.getElementById('total').innerText
-            };
-
-            if(!orderData.email || !orderData.firstName || !orderData.address) {
-                alert("Protocol Error: Required coordinates missing.");
-                btn.innerText = originalText;
-                btn.disabled = false;
-                return;
+            const variantContainer = document.getElementById('modal-variants');
+            if (p.variants) {
+                document.getElementById('modal-variants-container').classList.remove('hidden');
+                variantContainer.innerHTML = p.variants.map(v => `
+                    <button onclick="selectModalSize('${v.size}', ${v.price}, ${v.old}, this)" 
+                        class="variant-btn ${v.size === currentSelectedSize.size ? 'active' : ''}">${v.size}</button>
+                `).join('');
+            } else {
+                document.getElementById('modal-variants-container').classList.add('hidden');
             }
 
-            if(!selectedMethod) {
-                alert("Please select a payment channel: Vodafone Wallet or Telda.");
-                btn.innerText = originalText;
-                btn.disabled = false;
-                return;
-            }
+            document.getElementById('product-modal').classList.remove('hidden');
+            setTimeout(() => document.body.classList.add('modal-open'), 10);
+            lucide.createIcons();
+        }
 
-            orderData.paymentMethod = selectedMethod;
+        function selectModalSize(size, price, old, btn) {
+            currentSelectedSize = { size, price, old };
+            btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            updateModalPricing();
+        }
 
-            try {
-                const response = await fetch("https://formspree.io/f/meevygna", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(orderData)
+        function updateModalPricing() {
+            document.getElementById('modal-price').innerText = currentSelectedSize.price + " EGP";
+            document.getElementById('modal-old').innerText = currentSelectedSize.old + " EGP";
+        }
+
+        function closeModal() {
+            document.body.classList.remove('modal-open');
+            setTimeout(() => document.getElementById('product-modal').classList.add('hidden'), 500);
+            document.getElementById('modal-qty').innerText = "1";
+        }
+
+        function updateModalQty(delta) {
+            const span = document.getElementById('modal-qty');
+            let val = parseInt(span.innerText) + delta;
+            span.innerText = Math.max(1, val);
+        }
+
+        function addCurrentToBag() {
+            const qty = parseInt(document.getElementById('modal-qty').innerText);
+            for(let i=0; i<qty; i++) {
+                cart.push({ 
+                    ...currentSelectedProduct, 
+                    displaySize: currentSelectedSize.size, 
+                    displayPrice: currentSelectedSize.price 
                 });
-
-                if (response.ok) {
-                    alert("Your order will be confirmed soon. Returning to Boutique.");
-                    clearCart();
-                    window.location.href = 'index.html';
-                } else {
-                    alert("Submission error. Connect with Concierge.");
-                }
-            } catch (err) {
-                alert("System error. Check connection.");
-            } finally {
-                btn.innerText = originalText;
-                btn.disabled = false;
             }
+            updateCart();
+            closeModal();
+            toggleCart();
         }
 
-        renderSummary();
+        function updateCart() {
+            document.getElementById('cart-badge').innerText = cart.length;
+            const container = document.getElementById('cart-items');
+            container.innerHTML = cart.map((item, i) => `
+                <div class="flex gap-6 items-center border-b border-white/5 pb-6">
+                    <img src="${item.file}" class="w-20 h-20 object-contain bg-white/5 p-3">
+                    <div class="flex-grow space-y-1">
+                        <p class="luxury-font text-lg italic">${item.name}</p>
+                        <p class="text-[9px] uppercase tracking-widest opacity-40">${item.displaySize}</p>
+                        <p class="text-rose-gold text-xs">${item.displayPrice} EGP</p>
+                    </div>
+                    <button onclick="remove(${i})" class="opacity-20 hover:opacity-100"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                </div>
+            `).join('');
+            const total = cart.reduce((sum, item) => sum + item.displayPrice, 0);
+            document.getElementById('cart-total').innerText = total + " EGP";
+            lucide.createIcons();
+        }
+
+        function remove(i) { cart.splice(i, 1); updateCart(); }
+        function toggleCart() { document.getElementById('cart-drawer').classList.toggle('translate-x-full'); }
+        function filterG(g) { renderProducts(g === 'All' ? inventory : inventory.filter(p => p.gender === g)); }
+
+        renderProducts(inventory);
         lucide.createIcons();
     </script>
 </body>
