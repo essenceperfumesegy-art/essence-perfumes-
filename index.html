@@ -1,280 +1,705 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ECCENCE | High-Value Fragrance Specialist</title>
+    <title>ECCENCE | Haute Parfumerie & Archive</title>
+    
+    <!-- External Dependencies -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Montserrat:wght@100;300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@100;300;400;600&display=swap" rel="stylesheet">
+    <script src="vault.js"></script>
+
     <style>
-        :root { --rose-gold: #e5b0a3; --deep-burgundy: #1a0101; }
-        body { background-color: var(--deep-burgundy); color: white; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
-        .luxury-font { font-family: 'Cormorant Garamond', serif; }
-        
-        /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 3px; }
-        ::-webkit-scrollbar-track { background: var(--deep-burgundy); }
-        ::-webkit-scrollbar-thumb { background: var(--rose-gold); }
-
-        /* ANIMATIONS */
-        @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+        :root {
+            --primary: #1a0505; --primary-soft: #2a0a0a; --gold: #d4af37; --gold-light: #f9e29b;
+            --cream: #fdf5e6; --white: #ffffff; --black: #000000;
+            --transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        .reveal { animation: slideUpFade 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        
+        [data-theme="light"] {
+            --primary: #fdf5e6; --primary-soft: #f9e29b; --gold: #8c6d1f; --cream: #1a0505;
+        }
 
+        body {
+            background-color: var(--primary);
+            color: var(--cream);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .serif { font-family: 'Cormorant Garamond', serif; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--primary); }
+        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fadeIn 0.8s ease forwards; }
+
+        /* Mega Menu */
+        .mega-menu {
+            position: absolute; top: 100%; left: 0; width: 100vw; background: var(--primary-soft);
+            display: none; grid-template-columns: repeat(4, 1fr); padding: 40px 80px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1); backdrop-filter: blur(20px);
+            z-index: 100;
+        }
+        .nav-item:hover .mega-menu { display: grid; }
+
+        /* Tab Logic */
+        .page-tab { display: none; }
+        .page-tab.active { display: block; }
+
+        /* Glass Cards */
         .glass-card {
             background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            transition: var(--transition);
         }
         .glass-card:hover { 
-            background: rgba(255, 255, 255, 0.07); 
-            transform: translateY(-12px); 
-            border-color: var(--rose-gold); 
+            transform: translateY(-10px); 
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
         }
 
-        /* Shine Sweep Effect */
-        .glass-card::after {
-            content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(229, 176, 163, 0.15), transparent);
-            transform: skewX(-20deg); transition: 0.8s;
+        /* Hero Video */
+        .hero-video-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; opacity: 0.35; z-index: -1;
         }
-        .glass-card:hover::after { left: 150%; }
 
-        .btn-main {
-            background: transparent; border: 1px solid rgba(229, 176, 163, 0.4);
-            color: var(--rose-gold); padding: 14px; font-size: 10px;
-            letter-spacing: 4px; text-transform: uppercase; transition: 0.5s;
+        /* Buttons */
+        .btn-gold {
+            background: var(--gold); color: var(--primary);
+            padding: 12px 30px; font-size: 11px; letter-spacing: 3px;
+            text-transform: uppercase; font-weight: 600; transition: var(--transition);
+            border: 1px solid var(--gold);
         }
-        .btn-main:hover { background: var(--rose-gold); color: black; box-shadow: 0 0 20px rgba(229, 176, 163, 0.2); }
+        .btn-gold:hover { background: transparent; color: var(--gold); }
 
-        .variant-btn {
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 8px 16px; font-size: 10px; transition: 0.3s;
+        /* Drawers */
+        .drawer {
+            position: fixed; top: 0; right: -100%; width: 450px; height: 100vh;
+            background: var(--primary); z-index: 2000; transition: 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+            padding: 40px; border-left: 1px solid rgba(212, 175, 55, 0.1);
         }
-        .variant-btn.active { border-color: var(--rose-gold); color: var(--rose-gold); background: rgba(229, 176, 163, 0.05); }
+        .drawer.active { right: 0; }
+        .drawer-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+            z-index: 1500; opacity: 0; visibility: hidden; transition: 0.5s;
+            backdrop-filter: blur(8px);
+        }
+        .drawer-overlay.active { opacity: 1; visibility: visible; }
 
-        /* MODAL ANIMATION */
-        #product-modal.hidden { display: none; }
-        #product-modal-content { transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
-        .modal-open #product-modal-content { transform: scale(1); opacity: 1; }
-        
-        .price-old { font-size: 0.8em; color: #ff9d9d; text-decoration: line-through; opacity: 0.5; margin-left: 10px; }
+        /* Search Overlay */
+        .search-overlay {
+            position: fixed; inset: 0; background: var(--primary); z-index: 3000;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            padding: 40px;
+        }
+        .search-overlay.active { display: flex; }
+
+        /* Social Proof Pop */
+        #social-proof {
+            position: fixed; bottom: 30px; right: 30px; background: var(--primary-soft);
+            border: 1px solid var(--gold); padding: 15px 25px; border-radius: 5px;
+            display: flex; align-items: center; gap: 15px; z-index: 1000;
+            transform: translateX(200%); transition: 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        #social-proof.active { transform: translateX(0); }
+
+        /* Preloader */
+        #preloader {
+            position: fixed; inset: 0; background: var(--primary); z-index: 9999;
+            display: flex; align-items: center; justify-content: center; transition: 1s ease;
+        }
+
+        /* RTL Adjustments */
+        [dir="rtl"] .drawer { right: auto; left: -100%; border-left: none; border-right: 1px solid rgba(212, 175, 55, 0.1); }
+        [dir="rtl"] .drawer.active { left: 0; }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 
-    <nav class="fixed w-full z-[100] border-b border-white/5 px-8 py-6 flex justify-between items-center bg-[#1a0101]/90 backdrop-blur-xl">
-        <h1 class="luxury-font text-3xl tracking-[0.5em] cursor-pointer" onclick="window.location.reload()">ECCENCE</h1>
-        <div class="relative cursor-pointer text-rose-gold" onclick="toggleCart()">
-            <i data-lucide="shopping-cart" class="w-5 h-5"></i>
-            <span id="cart-badge" class="absolxxute -top-3 -right-3 bg-white text-black text-[9px] font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
-        </div>
-    </nav>
+    <div id="preloader">
+        <h1 class="serif text-5xl tracking-[0.5em] text-gold animate-pulse">ECCENCE</h1>
+    </div>
 
-    <main class="pt-32 pb-20">
-        <section class="px-6 md:px-24">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-20">
-                <div>
-                    <p class="text-rose-gold text-[10px] tracking-[0.8em] uppercase mb-4 opacity-70">Curated Archive</p>
-                    <h2 class="luxury-font text-7xl italic reveal">The Vault</h2>
+    <!-- Announcement Bar -->
+    <div class="bg-gold text-primary py-2 text-center text-[10px] tracking-[0.2em] font-bold uppercase relative z-[110]">
+        <span data-t="announcement">Complementary International Shipping on Acquisitions Over 5000 EGP</span>
+    </div>
+
+    <!-- Main Navigation -->
+    <header id="main-header" class="fixed w-full z-[100] transition-all duration-500 px-8 py-6 flex justify-between items-center">
+        <div class="logo serif text-4xl tracking-[0.4em] cursor-pointer text-gold" onclick="switchTab('home')">ECCENCE</div>
+        
+        <nav class="hidden lg:flex items-center gap-10">
+            <button onclick="switchTab('home')" class="text-[10px] uppercase tracking-[0.2em] hover:text-gold transition nav-link" data-t="nav_home">Home</button>
+            <div class="relative nav-item py-4">
+                <button class="text-[10px] uppercase tracking-[0.2em] hover:text-gold transition flex items-center gap-2" data-t="nav_collections">Collections <i data-lucide="chevron-down" class="w-3 h-3"></i></button>
+                <div class="mega-menu">
+                    <div class="space-y-4">
+                        <h4 class="text-gold uppercase tracking-[0.2em] text-[10px] mb-4">Archives</h4>
+                        <a href="#" class="block text-xs opacity-60 hover:opacity-100" data-t="mega_men">For Men</a>
+                        <a href="#" class="block text-xs opacity-60 hover:opacity-100" data-t="mega_women">For Women</a>
+                        <a href="#" class="block text-xs opacity-60 hover:opacity-100" data-t="mega_unisex">Unisex</a>
+                    </div>
+                    <div class="space-y-4">
+                        <h4 class="text-gold uppercase tracking-[0.2em] text-[10px] mb-4">Moods</h4>
+                        <a href="#" class="block text-xs opacity-60 hover:opacity-100">Dark & Nocturnal</a>
+                        <a href="#" class="block text-xs opacity-60 hover:opacity-100">Fresh & Marine</a>
+                        <a href="#" class="block text-xs opacity-60 hover:opacity-100">Sweet & Solar</a>
+                    </div>
+                    <div class="space-y-4">
+                        <h4 class="text-gold uppercase tracking-[0.2em] text-[10px] mb-4">Heritage</h4>
+                        <a href="#" class="block text-xs opacity-60 hover:opacity-100" data-t="mega_about">Our Story</a>
+                    </div>
                 </div>
-                <div class="flex gap-8 text-[10px] uppercase tracking-widest opacity-40 py-2">
-                    <button onclick="filterG('All')" class="hover:text-rose-gold transition">All</button>
-                    <button onclick="filterG('Men')" class="hover:text-rose-gold transition">Men</button>
-                    <button onclick="filterG('Women')" class="hover:text-rose-gold transition">Women</button>
+            </div>
+            <button onclick="switchTab('archive')" class="text-[10px] uppercase tracking-[0.2em] hover:text-gold transition nav-link" data-t="nav_archive">The Archive</button>
+            <a href="#" class="text-[10px] uppercase tracking-[0.2em] hover:text-gold transition" data-t="nav_journal">Journal</a>
+        </nav>
+
+        <div class="flex items-center gap-6">
+            <button onclick="toggleSearch()" class="hover:text-gold transition"><i data-lucide="search" class="w-5 h-5"></i></button>
+            <button onclick="toggleDrawer('wishlist')" class="hover:text-gold transition"><i data-lucide="heart" class="w-5 h-5"></i></button>
+            <div class="relative cursor-pointer hover:text-gold transition" onclick="toggleDrawer('cart')">
+                <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-gold text-primary text-[8px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+            </div>
+            <div class="h-4 w-[1px] bg-white/10 mx-2"></div>
+            <button onclick="toggleLanguage()" class="text-[10px] tracking-widest font-bold" id="lang-toggle">AR</button>
+            <button onclick="toggleTheme()" class="hover:text-gold transition" id="theme-btn"><i data-lucide="moon" class="w-4 h-4"></i></button>
+        </div>
+    </header>
+
+    <!-- Page Tabs -->
+    <main>
+        <!-- HOME TAB -->
+        <section id="tab-home" class="page-tab active">
+            <div class="hero relative h-screen flex items-center justify-center text-center overflow-hidden">
+                <video autoplay muted loop playsinline class="hero-video-bg">
+                    <source src="Sauvage Elixir - The New Film.mp4" type="video/mp4">
+                </video>
+                <div class="relative z-10 px-8 max-w-5xl">
+                    <p class="serif text-xl tracking-[0.6em] text-gold-light mb-6 opacity-80" data-t="hero_tag">Defining Luxury Since 1992</p>
+                    <h1 class="serif text-5xl md:text-8xl mb-10 leading-tight" data-t="hero_title">A Symphony of Invisible Elegance</h1>
+                    <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+                        <button onclick="switchTab('archive')" class="btn-gold" data-t="hero_cta">Explore Archive</button>
+                        <button onclick="openScentQuiz()" class="text-[10px] uppercase tracking-[0.3em] border-b border-gold pb-1 hover:text-gold transition">Discover Your Scent</button>
+                    </div>
                 </div>
             </div>
 
-            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Featured Collection -->
+            <section class="py-32 px-8">
+                <div class="flex justify-between items-end mb-16">
+                    <h2 class="serif text-5xl italic">Signature Batches</h2>
+                    <button onclick="switchTab('archive')" class="text-[10px] uppercase tracking-[0.4em] opacity-40 hover:opacity-100 transition">View All</button>
                 </div>
+                <div id="featured-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+                    <!-- Products will be injected here -->
+                </div>
+            </section>
+        </section>
+
+        <!-- ARCHIVE TAB -->
+        <section id="tab-archive" class="page-tab">
+            <div class="pt-48 pb-32 px-8">
+                <header class="mb-20">
+                    <p class="text-gold text-[10px] tracking-[1em] uppercase mb-4" data-t="archive_tag">Curated Collections</p>
+                    <h2 class="serif text-7xl" data-t="archive_title">The Fragrance Vault</h2>
+                </header>
+
+                <div class="flex flex-col lg:flex-row gap-20">
+                    <!-- Sidebar Filters -->
+                    <aside class="lg:w-64 space-y-12">
+                        <div class="space-y-6">
+                            <h4 class="text-[10px] uppercase tracking-[0.3em] text-gold">Perspective</h4>
+                            <div class="space-y-3 flex flex-col items-start">
+                                <button onclick="setFilter('All')" class="text-xs opacity-40 hover:opacity-100 transition filter-btn active" data-filter="All" data-t="filter_all">All</button>
+                                <button onclick="setFilter('Men')" class="text-xs opacity-40 hover:opacity-100 transition filter-btn" data-filter="Men" data-t="filter_men">Men</button>
+                                <button onclick="setFilter('Women')" class="text-xs opacity-40 hover:opacity-100 transition filter-btn" data-filter="Women" data-t="filter_women">Women</button>
+                                <button onclick="setFilter('Unisex')" class="text-xs opacity-40 hover:opacity-100 transition filter-btn" data-filter="Unisex" data-t="filter_unisex">Unisex</button>
+                            </div>
+                        </div>
+                        <!-- Recently Viewed -->
+                        <div id="recent-viewed-section" class="space-y-6 hidden">
+                            <h4 class="text-[10px] uppercase tracking-[0.3em] text-gold opacity-50">Recently Viewed</h4>
+                            <div id="recent-viewed-list" class="space-y-4"></div>
+                        </div>
+                    </aside>
+
+                    <!-- Inventory Grid -->
+                    <div id="archive-grid" class="flex-grow grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"></div>
+                </div>
+            </div>
         </section>
     </main>
 
-    <div id="product-modal" class="fixed inset-0 z-[300] hidden flex items-center justify-center p-6">
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="closeModal()"></div>
-        <div id="product-modal-content" class="relative w-full max-w-4xl bg-[#0d0101] border border-white/10 p-12 flex flex-col md:flex-row gap-12 opacity-0 scale-95 transition-all">
-            <button onclick="closeModal()" class="absolute top-6 right-6 opacity-30 hover:opacity-100"><i data-lucide="x"></i></button>
+    <!-- Side Overlays & Drawers -->
+    <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawers()"></div>
+
+    <!-- Cart Drawer -->
+    <div id="cart-drawer" class="drawer">
+        <div class="flex justify-between items-center mb-10">
+            <h2 class="serif text-4xl" data-t="cart_title">Your Acquisitions</h2>
+            <button onclick="closeDrawers()"><i data-lucide="x"></i></button>
+        </div>
+        <div id="cart-items" class="flex-grow overflow-y-auto space-y-8 h-[55vh]"></div>
+        <div class="mt-10 pt-10 border-t border-white/10 space-y-6">
+            <!-- Gift Wrap Toggle -->
+            <label class="flex items-center gap-4 cursor-pointer">
+                <input type="checkbox" id="gift-wrap-toggle" onchange="toggleGiftWrapProtocol(this.checked)" class="accent-gold">
+                <span class="text-[10px] tracking-[0.2em] uppercase opacity-60" data-t="gift_wrap">Luxury Gift Wrapping Protocol</span>
+            </label>
+            <div class="flex justify-between items-center">
+                <span class="text-[10px] uppercase tracking-[0.4em] opacity-40" data-t="total">Total Value</span>
+                <span id="cart-total" class="serif text-3xl text-gold">0 EGP</span>
+            </div>
+            <a href="checkout.html" class="btn-gold w-full text-center block" data-t="checkout">Initiate Checkout</a>
+        </div>
+    </div>
+
+    <!-- Wishlist Drawer -->
+    <div id="wishlist-drawer" class="drawer">
+        <div class="flex justify-between items-center mb-10">
+            <h2 class="serif text-4xl" data-t="wishlist_title">Wishlist Vault</h2>
+            <button onclick="closeDrawers()"><i data-lucide="x"></i></button>
+        </div>
+        <div id="wishlist-items" class="space-y-8"></div>
+    </div>
+
+    <!-- Search Overlay -->
+    <div id="search-overlay" class="search-overlay">
+        <button onclick="toggleSearch()" class="absolute top-10 right-10 text-gold"><i data-lucide="x" class="w-8 h-8"></i></button>
+        <div class="w-full max-w-3xl space-y-10">
+            <input type="text" id="search-field" oninput="handleSearch(this.value)" placeholder="Seek a fragrance..." class="bg-transparent border-b border-gold text-4xl serif w-full py-4 outline-none text-center" data-t-placeholder="search_placeholder">
+            <div id="search-results" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="product-modal" class="fixed inset-0 z-[3000] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl" onclick="closeProductModal()"></div>
+        <div class="relative w-full max-w-6xl bg-primary border border-white/10 p-12 flex flex-col lg:flex-row gap-16 overflow-y-auto max-h-[90vh]">
+            <button onclick="closeProductModal()" class="absolute top-8 right-8 text-gold opacity-50 hover:opacity-100 transition"><i data-lucide="x"></i></button>
             
-            <div class="w-full md:w-1/2 flex items-center justify-center bg-white/5 p-10">
-                <img id="modal-img" src="" class="max-h-96 object-contain drop-shadow-2xl">
+            <div id="modal-img-container" class="lg:w-1/2 flex items-center justify-center bg-white/5 p-12 overflow-hidden">
+                <img id="m-img" src="" class="max-h-[500px] object-contain transition-transform duration-500 cursor-zoom-in">
             </div>
 
-            <div class="w-full md:w-1/2 space-y-8">
+            <div class="lg:w-1/2 space-y-10">
                 <div>
-                    <p id="modal-gender" class="text-[9px] tracking-[0.4em] text-rose-gold uppercase mb-2"></p>
-                    <h3 id="modal-name" class="luxury-font text-5xl italic mb-4"></h3>
-                    <div class="flex items-baseline">
-                        <span id="modal-price" class="text-2xl text-rose-gold font-light"></span>
-                        <span id="modal-old" class="price-old text-lg"></span>
-                    </div>
+                    <p id="m-cat" class="text-[10px] tracking-[0.5em] text-gold uppercase mb-4"></p>
+                    <h3 id="m-name" class="serif text-6xl italic leading-tight mb-4"></h3>
+                    <p id="m-price" class="text-3xl text-gold italic"></p>
                 </div>
 
-                <div id="modal-variants-container" class="space-y-4">
-                    <p class="text-[9px] uppercase tracking-[0.3em] opacity-40">Select Volume</p>
-                    <div id="modal-variants" class="flex gap-4"></div>
+                <div class="flex items-center gap-4 py-4 border-y border-white/5">
+                    <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
+                    <p id="m-stock" class="text-[9px] uppercase tracking-widest opacity-60"></p>
                 </div>
 
-                <div class="space-y-6 pt-6 border-t border-white/5">
-                    <div class="flex items-center justify-between border border-white/10 p-4">
-                        <button class="px-6" onclick="updateModalQty(-1)">-</button>
-                        <span id="modal-qty" class="text-sm">1</span>
-                        <button class="px-6" onclick="updateModalQty(1)">+</button>
-                    </div>
-                    <button onclick="addCurrentToBag()" class="btn-main w-full py-6">Add to Acquisition</button>
-                    <button class="w-full py-4 text-[9px] uppercase tracking-[0.4em] opacity-30">Immediate Checkout</button>
+                <div class="space-y-4">
+                    <p class="text-[10px] uppercase tracking-widest opacity-30">Olfactory Breakdown</p>
+                    <div id="m-notes" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <div class="glass-card p-6 space-y-4">
+                    <p class="text-[10px] uppercase tracking-widest text-gold">Scent Layering Protocol</p>
+                    <p class="text-[11px] opacity-60 leading-relaxed">Pair with deep ambery base notes for evening intensity, or layer with white florals to illuminate the heart.</p>
+                </div>
+
+                <div class="flex gap-4">
+                    <button onclick="addToCartFromModal()" class="btn-gold flex-grow py-6" data-t="quiz_acquire">Acquire Now</button>
+                    <button onclick="toggleWishlistModal()" id="m-wish-btn" class="p-6 border border-white/10 hover:border-gold transition"><i data-lucide="heart"></i></button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full md:w-[480px] bg-[#0a0101] z-[400] translate-x-full transition-transform duration-700 p-12 flex flex-col border-l border-white/10">
-        <div class="flex justify-between items-center mb-16">
-            <h4 class="luxury-font text-4xl italic">Acquisitions</h4>
-            <button onclick="toggleCart()" class="opacity-20 hover:opacity-100"><i data-lucide="x"></i></button>
+    <!-- Floating UI -->
+    <div id="social-proof">
+        <img id="sp-img" src="" class="w-12 h-12 object-contain bg-white p-1">
+        <div class="text-[10px]">
+            <p class="font-bold text-gold" id="sp-name"></p>
+            <p id="sp-text" class="opacity-60"></p>
         </div>
-        <div id="cart-items" class="flex-grow overflow-y-auto space-y-8"></div>
-        <div class="pt-10 border-t border-white/10 space-y-6">
-            <div class="flex justify-between uppercase tracking-[0.2em] text-xs">
-                <span class="opacity-40">Total Value</span>
-                <span id="cart-total" class="text-rose-gold text-xl">0 EGP</span>
+    </div>
+
+    <div id="concierge-trigger" class="fixed bottom-30 left-30 z-[1000] cursor-pointer bg-primary border border-gold w-16 h-16 rounded-full flex items-center justify-center shadow-2xl" onclick="toggleChat()">
+        <i data-lucide="message-square" class="text-gold w-6 h-6"></i>
+    </div>
+    
+    <div id="chat-modal" class="fixed bottom-24 left-8 w-[350px] bg-primary border border-gold z-[1001] hidden flex flex-col shadow-2xl animate-fade">
+        <div class="bg-gold text-primary p-5 flex justify-between items-center">
+            <span class="font-bold tracking-widest uppercase text-xs">ECCENCE Concierge</span>
+            <button onclick="toggleChat()"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+        <div id="chat-messages" class="h-80 p-6 overflow-y-auto flex flex-col gap-4 text-[11px]">
+            <p class="bg-white/5 p-4" data-t="concierge_welcome">Welcome. How may we assist your journey?</p>
+        </div>
+        <div class="p-4 border-t border-white/10 flex gap-2">
+            <input type="text" id="chat-input" placeholder="Inquire here..." class="bg-transparent text-xs outline-none flex-grow" onkeypress="if(event.key==='Enter') sendChatMessage()" data-t-placeholder="concierge_input">
+            <button onclick="sendChatMessage()" class="text-gold uppercase text-[10px] tracking-widest" data-t="concierge_send">Send</button>
+        </div>
+    </div>
+
+    <div id="scent-quiz-modal" class="fixed inset-0 z-[5000] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/95" onclick="closeScentQuiz()"></div>
+        <div class="relative bg-primary border border-gold p-16 max-w-2xl w-full text-center space-y-10">
+            <h2 class="serif text-4xl text-gold" data-t="quiz_title">Olfactory Profiling</h2>
+            <div id="quiz-content" class="space-y-8">
+                <p class="opacity-60 text-sm" data-t="quiz_desc">Select your desired environment:</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <button class="btn-outline border border-white/10 py-6 hover:border-gold transition uppercase text-[10px] tracking-widest" onclick="runQuiz('Dark')" data-t="quiz_option_dark">Moonlit Gala</button>
+                    <button class="btn-outline border border-white/10 py-6 hover:border-gold transition uppercase text-[10px] tracking-widest" onclick="runQuiz('Fresh')" data-t="quiz_option_fresh">Azure Coast</button>
+                    <button class="btn-outline border border-white/10 py-6 hover:border-gold transition uppercase text-[10px] tracking-widest" onclick="runQuiz('Executive')" data-t="quiz_option_exec">Executive Suite</button>
+                    <button class="btn-outline border border-white/10 py-6 hover:border-gold transition uppercase text-[10px] tracking-widest" onclick="runQuiz('Sweet')" data-t="quiz_option_sweet">Royal Garden</button>
+                </div>
             </div>
-            <button class="w-full py-6 bg-white text-black font-bold uppercase text-[11px] tracking-[0.4em] hover:bg-rose-gold transition-all duration-500">Checkout</button>
+            <button onclick="closeScentQuiz()" class="opacity-30 uppercase text-[9px] tracking-widest">Close</button>
         </div>
     </div>
 
     <script>
-        const inventory = [
-            { id: 1, name: "YSL MYSLF", gender: "Men", file: "MYSLF Le Parfum - Men's Spicy Vanilla Fragrance - YSL Beauty.jpg", 
-                variants: [ {size: "60ml", price: 1000, old: 1400}, {size: "100ml", price: 1400, old: 1900} ] },
-            { id: 2, name: "YSL Y EDP", gender: "Men", file: "Ysl.JPG", 
-                variants: [ {size: "100ml", price: 1200, old: 1650}, {size: "200ml", price: 2100, old: 2800} ] },
-            { id: 3, name: "LV Imagination", gender: "Men", file: "LouisVuittonimagination.JPG", price: 4800, old: 5600 },
-            { id: 4, name: "LV Pacific Chill", gender: "Men", file: "LouisVuittonPacificchill.JPG", price: 4800, old: 5600 },
-            { id: 5, name: "Dark Verse", gender: "Women", file: "Luna Caine ✩ Dark Verse.webp", price: 1350, old: 1800 },
-            { id: 6, name: "PDM Delina Exclusif", gender: "Women", file: "pdm dalida.webp", price: 5800, old: 7200 },
-            { id: 7, name: "YSL Libre Intense", gender: "Women", file: "Libre Eau de Parfum Intense Women's Perfume _ YSL Beauty.webp", price: 2400, old: 3100 },
-            { id: 8, name: "Valentino Born Roma", gender: "Women", file: "valnteino born in rome intense wommen.jpg", price: 2100, old: 2750 },
-            { id: 9, name: "YSL Babycat", gender: "Men", file: "Yves Saint Laurent Babycat Eau de Parfum _ Nordstrom.jpg", price: 5500, old: 6500 },
-            { id: 10, name: "ADG Profondo", gender: "Men", file: "aqua di gio.jpg", price: 1800, old: 2400 },
-            { id: 11, name: "Creed Aventus", gender: "Men", file: "Creedaventos.JPG", price: 7500, old: 9000 },
-            { id: 12, name: "Lattafa Asad", gender: "Men", file: "Lattafa Perfumes Asad for Unisex Eau de Parfum Spray, 3_4 Ounce.jpg", price: 950, old: 1300 }
-        ];
+        // State Management
+        let currentLang = getLang();
+        let currentTheme = localStorage.getItem('eccence_theme') || 'dark';
+        let wishlist = JSON.parse(localStorage.getItem('eccence_wishlist') || '[]');
+        let activeProduct = null;
 
-        let cart = [];
-        let currentSelectedProduct = null;
-        let currentSelectedSize = null;
+        window.onload = () => {
+            initUI();
+            switchTab('home');
+            setTimeout(() => {
+                document.getElementById('preloader').style.opacity = '0';
+                setTimeout(() => document.getElementById('preloader').style.display = 'none', 1000);
+            }, 1500);
+            
+            // Social Proof Loop
+            setInterval(showRandomSocialProof, 20000);
+            showRandomSocialProof();
+        };
 
-        function renderProducts(items) {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = items.map((p, idx) => `
-                <div class="glass-card p-10 flex flex-col h-full reveal" style="animation-delay: ${idx * 0.05}s" onclick="openModal(${p.id})">
-                    <div class="h-64 flex items-center justify-center mb-8">
-                        <img src="${p.file}" class="max-h-full object-contain drop-shadow-2xl">
+        function initUI() {
+            lucide.createIcons();
+            applyLanguage();
+            applyTheme();
+            updateGlobalUI();
+            renderFeatured();
+        }
+
+        function applyLanguage() {
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('lang-toggle').innerText = currentLang === 'en' ? 'AR' : 'EN';
+            
+            document.querySelectorAll('[data-t]').forEach(el => {
+                const key = el.getAttribute('data-t');
+                el.innerText = t(key);
+            });
+            document.querySelectorAll('[data-t-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-t-placeholder');
+                el.placeholder = t(key);
+            });
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            localStorage.setItem('eccence_lang', currentLang);
+            applyLanguage();
+            renderArchive(); // Refresh items in case translation affects labels
+        }
+
+        function applyTheme() {
+            document.body.setAttribute('data-theme', currentTheme);
+            const icon = document.getElementById('theme-btn');
+            icon.innerHTML = `<i data-lucide="${currentTheme === 'dark' ? 'sun' : 'moon'}" class="w-4 h-4"></i>`;
+            lucide.createIcons();
+        }
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('eccence_theme', currentTheme);
+            applyTheme();
+        }
+
+        // SPA Tab Logic
+        function switchTab(tab) {
+            document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('text-gold'));
+            // Scroll to top
+            window.scrollTo(0,0);
+            
+            if(tab === 'archive') renderArchive();
+            lucide.createIcons();
+        }
+
+        // Feature: Featured Grid
+        function renderFeatured() {
+            const grid = document.getElementById('featured-grid');
+            const items = inventory.slice(0, 4);
+            grid.innerHTML = items.map(p => productCard(p)).join('');
+            lucide.createIcons();
+        }
+
+        // Feature: Archive Grid + Filters
+        let activeFilter = 'All';
+        function setFilter(f) {
+            activeFilter = f;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === f));
+            renderArchive();
+        }
+
+        function renderArchive() {
+            const grid = document.getElementById('archive-grid');
+            const items = activeFilter === 'All' ? inventory : inventory.filter(p => p.gender === activeFilter || p.gender === 'Unisex');
+            grid.innerHTML = items.map(p => productCard(p)).join('');
+            renderRecentlyViewed();
+            lucide.createIcons();
+        }
+
+        function productCard(p) {
+            return `
+                <div class="glass-card p-10 animate-fade" onclick="openProductModal(${p.id})">
+                    <div class="relative aspect-square mb-10 overflow-hidden group">
+                        <img src="${p.file}" class="max-h-full mx-auto object-contain transition-transform duration-700 group-hover:scale-110">
+                        <button onclick="event.stopPropagation(); quickAcquire(${p.id})" class="absolute bottom-0 left-0 w-full bg-gold text-primary text-[9px] tracking-widest font-bold py-4 translate-y-full group-hover:translate-y-0 transition-transform">QUICK ACQUISITION</button>
                     </div>
                     <div class="space-y-2">
-                        <h4 class="luxury-font text-2xl tracking-wide italic">${p.name}</h4>
-                        <p class="text-rose-gold font-light tracking-widest">${p.variants ? p.variants[0].price : p.price} EGP</p>
+                        <p class="text-[8px] tracking-[0.4em] uppercase opacity-30">${p.gender}</p>
+                        <h4 class="serif text-2xl italic">${p.name}</h4>
+                        <p class="text-gold text-sm tracking-widest">${p.price} EGP</p>
                     </div>
                 </div>
-            `).join('');
+            `;
         }
 
-        function openModal(id) {
+        // Drawer Logic
+        function toggleDrawer(id) {
+            document.getElementById('drawer-overlay').classList.add('active');
+            document.getElementById(id + '-drawer').classList.add('active');
+            if(id === 'cart') renderCart();
+            if(id === 'wishlist') renderWishlist();
+        }
+
+        function closeDrawers() {
+            document.querySelectorAll('.drawer').forEach(d => d.classList.remove('active'));
+            document.getElementById('drawer-overlay').classList.remove('active');
+        }
+
+        // Cart Logic
+        function quickAcquire(id) {
             const p = inventory.find(x => x.id === id);
-            currentSelectedProduct = p;
-            currentSelectedSize = p.variants ? p.variants[0] : { size: 'Standard', price: p.price, old: p.old };
-            
-            document.getElementById('modal-img').src = p.file;
-            document.getElementById('modal-name').innerText = p.name;
-            document.getElementById('modal-gender').innerText = p.gender;
-            updateModalPricing();
-
-            const variantContainer = document.getElementById('modal-variants');
-            if (p.variants) {
-                document.getElementById('modal-variants-container').classList.remove('hidden');
-                variantContainer.innerHTML = p.variants.map(v => `
-                    <button onclick="selectModalSize('${v.size}', ${v.price}, ${v.old}, this)" 
-                        class="variant-btn ${v.size === currentSelectedSize.size ? 'active' : ''}">${v.size}</button>
-                `).join('');
-            } else {
-                document.getElementById('modal-variants-container').classList.add('hidden');
-            }
-
-            document.getElementById('product-modal').classList.remove('hidden');
-            setTimeout(() => document.body.classList.add('modal-open'), 10);
-            lucide.createIcons();
+            addToCart(p);
+            updateGlobalUI();
+            toggleDrawer('cart');
+            showRandomSocialProof(p);
         }
 
-        function selectModalSize(size, price, old, btn) {
-            currentSelectedSize = { size, price, old };
-            btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            updateModalPricing();
-        }
-
-        function updateModalPricing() {
-            document.getElementById('modal-price').innerText = currentSelectedSize.price + " EGP";
-            document.getElementById('modal-old').innerText = currentSelectedSize.old + " EGP";
-        }
-
-        function closeModal() {
-            document.body.classList.remove('modal-open');
-            setTimeout(() => document.getElementById('product-modal').classList.add('hidden'), 500);
-            document.getElementById('modal-qty').innerText = "1";
-        }
-
-        function updateModalQty(delta) {
-            const span = document.getElementById('modal-qty');
-            let val = parseInt(span.innerText) + delta;
-            span.innerText = Math.max(1, val);
-        }
-
-        function addCurrentToBag() {
-            const qty = parseInt(document.getElementById('modal-qty').innerText);
-            for(let i=0; i<qty; i++) {
-                cart.push({ 
-                    ...currentSelectedProduct, 
-                    displaySize: currentSelectedSize.size, 
-                    displayPrice: currentSelectedSize.price 
-                });
-            }
-            updateCart();
-            closeModal();
-            toggleCart();
-        }
-
-        function updateCart() {
-            document.getElementById('cart-badge').innerText = cart.length;
+        function renderCart() {
             const container = document.getElementById('cart-items');
-            container.innerHTML = cart.map((item, i) => `
-                <div class="flex gap-6 items-center border-b border-white/5 pb-6">
-                    <img src="${item.file}" class="w-20 h-20 object-contain bg-white/5 p-3">
-                    <div class="flex-grow space-y-1">
-                        <p class="luxury-font text-lg italic">${item.name}</p>
-                        <p class="text-[9px] uppercase tracking-widest opacity-40">${item.displaySize}</p>
-                        <p class="text-rose-gold text-xs">${item.displayPrice} EGP</p>
+            const cart = getCart();
+            if(cart.length === 0) {
+                container.innerHTML = '<p class="opacity-20 text-center py-20 text-xs">The vault is currently empty.</p>';
+                document.getElementById('cart-total').innerText = "0 EGP";
+                return;
+            }
+            container.innerHTML = cart.map((item, idx) => `
+                <div class="flex gap-6 items-center border-b border-white/5 pb-8 animate-fade">
+                    <img src="${item.file}" class="w-16 h-16 bg-white object-contain p-2">
+                    <div class="flex-grow">
+                        <h5 class="serif text-lg leading-tight">${item.name}</h5>
+                        <p class="text-gold text-xs mt-1">${item.price} EGP</p>
                     </div>
-                    <button onclick="remove(${i})" class="opacity-20 hover:opacity-100"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    <button onclick="removeCart(${idx})" class="opacity-20 hover:opacity-100 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                 </div>
             `).join('');
-            const total = cart.reduce((sum, item) => sum + item.displayPrice, 0);
-            document.getElementById('cart-total').innerText = total + " EGP";
+            document.getElementById('cart-total').innerText = cart.reduce((s,i)=>s+i.price,0) + " EGP";
             lucide.createIcons();
         }
 
-        function remove(i) { cart.splice(i, 1); updateCart(); }
-        function toggleCart() { document.getElementById('cart-drawer').classList.toggle('translate-x-full'); }
-        function filterG(g) { renderProducts(g === 'All' ? inventory : inventory.filter(p => p.gender === g)); }
+        function removeCart(idx) {
+            removeFromCart(idx);
+            renderCart();
+            updateGlobalUI();
+        }
 
-        renderProducts(inventory);
-        lucide.createIcons();
+        function updateGlobalUI() {
+            document.getElementById('cart-count').innerText = getCart().length;
+            document.getElementById('gift-wrap-toggle').checked = isGiftWrapEnabled();
+        }
+
+        function toggleGiftWrapProtocol(status) {
+            toggleGiftWrap(status);
+        }
+
+        // Wishlist Logic
+        function toggleWishlist(id) {
+            if(wishlist.includes(id)) wishlist = wishlist.filter(x => x !== id);
+            else wishlist.push(id);
+            localStorage.setItem('eccence_wishlist', JSON.stringify(wishlist));
+            updateGlobalUI();
+        }
+
+        function renderWishlist() {
+            const container = document.getElementById('wishlist-items');
+            const items = inventory.filter(p => wishlist.includes(p.id));
+            if(items.length === 0) {
+                container.innerHTML = '<p class="opacity-20 text-center py-20 text-xs">No desires recorded.</p>';
+                return;
+            }
+            container.innerHTML = items.map(item => `
+                <div class="flex gap-6 items-center border-b border-white/5 pb-8" onclick="openProductModal(${item.id}); closeDrawers();">
+                    <img src="${item.file}" class="w-12 h-12 bg-white object-contain p-1">
+                    <div>
+                        <h5 class="serif text-md">${item.name}</h5>
+                        <p class="text-gold text-[10px]">${item.price} EGP</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Product Modal
+        function openProductModal(id) {
+            activeProduct = inventory.find(x => x.id === id);
+            document.getElementById('m-img').src = activeProduct.file;
+            document.getElementById('m-name').innerText = activeProduct.name;
+            document.getElementById('m-price').innerText = activeProduct.price + " EGP";
+            document.getElementById('m-cat').innerText = activeProduct.gender;
+            
+            const stockEl = document.getElementById('m-stock');
+            if(activeProduct.stock > 0) {
+                stockEl.innerText = `Only ${activeProduct.stock} units remaining in heritage vault.`;
+                stockEl.classList.remove('text-red-500');
+            } else {
+                stockEl.innerText = "Current Batch Depleted. Join Waitlist Protocol.";
+                stockEl.classList.add('text-red-500');
+            }
+
+            document.getElementById('m-notes').innerHTML = activeProduct.notes.map(n => `<span class="note-tag">${n}</span>`).join('');
+            
+            const wishBtn = document.getElementById('m-wish-btn');
+            wishBtn.classList.toggle('text-gold', wishlist.includes(activeProduct.id));
+            
+            document.getElementById('product-modal').classList.remove('hidden');
+            addToRecentlyViewed(activeProduct);
+            
+            // Zoom Effect
+            const container = document.getElementById('modal-img-container');
+            const img = document.getElementById('m-img');
+            container.onmousemove = (e) => {
+                const rect = container.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                img.style.transformOrigin = `${(x/rect.width)*100}% ${(y/rect.height)*100}%`;
+                img.style.transform = 'scale(2)';
+            };
+            container.onmouseleave = () => img.style.transform = 'scale(1)';
+            lucide.createIcons();
+        }
+
+        function closeProductModal() { document.getElementById('product-modal').classList.add('hidden'); }
+        function addToCartFromModal() { quickAcquire(activeProduct.id); closeProductModal(); }
+        function toggleWishlistModal() { toggleWishlist(activeProduct.id); document.getElementById('m-wish-btn').classList.toggle('text-gold', wishlist.includes(activeProduct.id)); }
+
+        // Recently Viewed
+        function renderRecentlyViewed() {
+            const recent = getRecentlyViewed();
+            const section = document.getElementById('recent-viewed-section');
+            const list = document.getElementById('recent-viewed-list');
+            if(recent.length === 0) return section.classList.add('hidden');
+            section.classList.remove('hidden');
+            list.innerHTML = recent.map(p => `
+                <div class="flex gap-4 items-center cursor-pointer group" onclick="openProductModal(${p.id})">
+                    <img src="${p.file}" class="w-10 h-10 object-contain bg-white/5 border border-white/5 group-hover:border-gold transition">
+                    <p class="text-[10px] luxury-font group-hover:text-gold transition">${p.name}</p>
+                </div>
+            `).join('');
+        }
+
+        // Search
+        function toggleSearch() {
+            const overlay = document.getElementById('search-overlay');
+            overlay.classList.toggle('active');
+            if(overlay.classList.contains('active')) document.getElementById('search-field').focus();
+        }
+
+        function handleSearch(val) {
+            const results = inventory.filter(p => p.name.toLowerCase().includes(val.toLowerCase()) || p.notes.some(n => n.toLowerCase().includes(val.toLowerCase()))).slice(0, 4);
+            const container = document.getElementById('search-results');
+            container.innerHTML = results.map(p => `
+                <div class="glass-card p-6 cursor-pointer" onclick="openProductModal(${p.id}); toggleSearch();">
+                    <img src="${p.file}" class="w-full h-32 object-contain mb-4">
+                    <p class="text-[9px] uppercase tracking-widest opacity-50 text-center">${p.name}</p>
+                </div>
+            `).join('');
+        }
+
+        // Floating UI Functions
+        function toggleChat() { document.getElementById('chat-modal').classList.toggle('hidden'); }
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const msg = input.value;
+            if(!msg) return;
+            const container = document.getElementById('chat-messages');
+            container.innerHTML += `<p class="bg-gold text-primary p-3 self-end ml-10 rounded-l-lg">${msg}</p>`;
+            input.value = '';
+            setTimeout(() => {
+                container.innerHTML += `<p class="bg-white/5 p-4 mr-10 rounded-r-lg italic opacity-70">The Master Perfumer has been notified. One moment...</p>`;
+                container.scrollTop = container.scrollHeight;
+            }, 1000);
+        }
+
+        function openScentQuiz() { document.getElementById('scent-quiz-modal').classList.remove('hidden'); }
+        function closeScentQuiz() { document.getElementById('scent-quiz-modal').classList.add('hidden'); }
+        function runQuiz(type) {
+            const recommendation = inventory.find(p => p.notes.includes(type) || (type === 'Dark' && p.gender === 'Men') || (type === 'Fresh' && p.gender === 'Unisex'));
+            const content = document.getElementById('quiz-content');
+            content.innerHTML = `
+                <div class="animate-fade">
+                    <p class="text-gold uppercase tracking-widest text-[10px] mb-6" data-t="quiz_recommend">Your Olfactory Soulmate:</p>
+                    <img src="${recommendation.file}" class="w-40 mx-auto mb-6">
+                    <h4 class="serif text-3xl mb-8">${recommendation.name}</h4>
+                    <button onclick="quickAcquire(${recommendation.id}); closeScentQuiz();" class="btn-gold" data-t="quiz_acquire">Acquire Now</button>
+                </div>
+            `;
+        }
+
+        // Social Proof
+        const users = ["Julian from Monaco", "Sofia from Milan", "Omar from Cairo", "Aria from Tokyo", "Liam from London"];
+        function showRandomSocialProof(product = null) {
+            const sp = document.getElementById('social-proof');
+            const p = product || inventory[Math.floor(Math.random()*inventory.length)];
+            const user = users[Math.floor(Math.random()*users.length)];
+            
+            document.getElementById('sp-img').src = p.file;
+            document.getElementById('sp-name').innerText = user;
+            document.getElementById('sp-text').innerText = "Just acquired " + p.name;
+            
+            sp.classList.add('active');
+            setTimeout(() => sp.classList.remove('active'), 5000);
+        }
+
+        // Header Transparency
+        window.onscroll = () => {
+            const header = document.getElementById('main-header');
+            if(window.scrollY > 50) {
+                header.classList.add('bg-primary/95', 'backdrop-blur-xl', 'py-4', 'border-b', 'border-white/5');
+            } else {
+                header.classList.remove('bg-primary/95', 'backdrop-blur-xl', 'py-4', 'border-b', 'border-white/5');
+            }
+        };
     </script>
 </body>
 </html>
