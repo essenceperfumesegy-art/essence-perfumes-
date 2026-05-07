@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" style="scroll-behavior: smooth;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ECCENCE - Haute Parfumerie & Archive. Discover the most exclusive fragrances from around the world.">
+    <meta name="keywords" content="Perfume, Luxury Fragrance, ECCENCE, Haute Parfumerie, Niche Perfume">
     <title>ECCENCE | Haute Parfumerie & Archive</title>
     
     <!-- External Dependencies -->
@@ -122,6 +124,11 @@
         /* RTL Adjustments */
         [dir="rtl"] .drawer { right: auto; left: -100%; border-left: none; border-right: 1px solid rgba(212, 175, 55, 0.1); }
         [dir="rtl"] .drawer.active { left: 0; }
+        
+        /* Accordion */
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .accordion-item.active .accordion-content { max-height: 500px; }
+        .accordion-item.active .acc-icon { transform: rotate(180deg); }
     </style>
 </head>
 <body data-theme="dark">
@@ -187,7 +194,11 @@
                 <video autoplay muted loop playsinline class="hero-video-bg">
                     <source src="Sauvage Elixir - The New Film.mp4" type="video/mp4">
                 </video>
-                <div class="relative z-10 px-8 max-w-5xl">
+                <div class="relative z-10 px-8 max-w-5xl mt-16">
+                    <!-- Breadcrumbs -->
+                    <div class="text-[9px] uppercase tracking-widest opacity-50 mb-10">
+                        <span>Home</span> <span class="mx-2">></span> <span>Boutique</span>
+                    </div>
                     <p class="serif text-xl tracking-[0.6em] text-gold-light mb-6 opacity-80" data-t="hero_tag">Defining Luxury Since 1992</p>
                     <h1 class="serif text-5xl md:text-8xl mb-10 leading-tight" data-t="hero_title">A Symphony of Invisible Elegance</h1>
                     <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
@@ -207,11 +218,75 @@
                     <!-- Products will be injected here -->
                 </div>
             </section>
+            
+            <!-- Client Testimonials (Customer Reviews) -->
+            <section class="py-32 px-8 bg-black/20">
+                <h2 class="serif text-5xl italic text-center mb-16">Client Testimonials</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+                    <div class="glass-card p-10 text-center">
+                        <div class="flex justify-center text-gold mb-4"><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i></div>
+                        <p class="text-sm italic opacity-80 mb-6">"An absolutely unparalleled experience. The packaging, the presentation, and the scent itself are purely divine."</p>
+                        <p class="text-[9px] uppercase tracking-widest text-gold">- Eleanor R.</p>
+                    </div>
+                    <div class="glass-card p-10 text-center">
+                        <div class="flex justify-center text-gold mb-4"><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i></div>
+                        <p class="text-sm italic opacity-80 mb-6">"The scent layering protocol recommended by the Concierge elevated my entire collection. Exceptional service."</p>
+                        <p class="text-[9px] uppercase tracking-widest text-gold">- Julian V.</p>
+                    </div>
+                    <div class="glass-card p-10 text-center">
+                        <div class="flex justify-center text-gold mb-4"><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i></div>
+                        <p class="text-sm italic opacity-80 mb-6">"I acquired Alexandria II through the Archive. Fast shipping and the gift wrapping was a masterclass in luxury."</p>
+                        <p class="text-[9px] uppercase tracking-widest text-gold">- Sofia M.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Support & FAQ & Contact Form -->
+            <section class="py-32 px-8 max-w-6xl mx-auto flex flex-col md:flex-row gap-20">
+                <div class="md:w-1/2">
+                    <h2 class="serif text-5xl italic mb-10">The Concierge FAQ</h2>
+                    <div class="space-y-4">
+                        <div class="accordion-item border-b border-white/10 pb-4">
+                            <button class="w-full flex justify-between items-center py-2 text-left text-sm uppercase tracking-widest opacity-80 hover:text-gold transition" onclick="this.parentElement.classList.toggle('active')">
+                                Shipping Protocols <i data-lucide="chevron-down" class="w-4 h-4 acc-icon transition-transform"></i>
+                            </button>
+                            <div class="accordion-content"><p class="pt-4 text-xs opacity-60 leading-relaxed">We offer complimentary international shipping on all acquisitions over 5000 EGP. Deliveries are fulfilled via secure courier within 3-5 business days.</p></div>
+                        </div>
+                        <div class="accordion-item border-b border-white/10 pb-4">
+                            <button class="w-full flex justify-between items-center py-2 text-left text-sm uppercase tracking-widest opacity-80 hover:text-gold transition" onclick="this.parentElement.classList.toggle('active')">
+                                Authenticity Guarantee <i data-lucide="chevron-down" class="w-4 h-4 acc-icon transition-transform"></i>
+                            </button>
+                            <div class="accordion-content"><p class="pt-4 text-xs opacity-60 leading-relaxed">All batches in our Vault are sourced directly from the master perfumers and authorized distributors. We guarantee 100% authenticity.</p></div>
+                        </div>
+                        <div class="accordion-item border-b border-white/10 pb-4">
+                            <button class="w-full flex justify-between items-center py-2 text-left text-sm uppercase tracking-widest opacity-80 hover:text-gold transition" onclick="this.parentElement.classList.toggle('active')">
+                                Return Policy <i data-lucide="chevron-down" class="w-4 h-4 acc-icon transition-transform"></i>
+                            </button>
+                            <div class="accordion-content"><p class="pt-4 text-xs opacity-60 leading-relaxed">Unopened fragrances in their original packaging can be returned within 14 days. Please contact the Concierge to initiate a return protocol.</p></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <h2 class="serif text-5xl italic mb-10">Direct Inquiry</h2>
+                    <form onsubmit="event.preventDefault(); alert('Inquiry sent to Concierge.');" class="space-y-6">
+                        <input type="text" placeholder="Name" class="w-full bg-black/20 border border-white/10 p-4 text-sm outline-none focus:border-gold transition">
+                        <input type="email" placeholder="Email" class="w-full bg-black/20 border border-white/10 p-4 text-sm outline-none focus:border-gold transition">
+                        <textarea placeholder="Message" rows="4" class="w-full bg-black/20 border border-white/10 p-4 text-sm outline-none focus:border-gold transition"></textarea>
+                        <button type="submit" class="btn-gold w-full">Dispatch Inquiry</button>
+                    </form>
+                </div>
+            </section>
+
         </section>
 
         <!-- ARCHIVE TAB -->
         <section id="tab-archive" class="page-tab">
             <div class="pt-48 pb-32 px-8">
+                <!-- Breadcrumbs -->
+                <div class="text-[9px] uppercase tracking-widest opacity-50 mb-10 text-center lg:text-left">
+                    <span class="cursor-pointer hover:text-gold" onclick="switchTab('home')">Home</span> <span class="mx-2">></span> <span>The Archive</span>
+                </div>
+                
                 <header class="mb-20">
                     <p class="text-gold text-[10px] tracking-[1em] uppercase mb-4" data-t="archive_tag">Curated Collections</p>
                     <h2 class="serif text-7xl" data-t="archive_title">The Fragrance Vault</h2>
@@ -221,7 +296,7 @@
                     <!-- Sidebar Filters -->
                     <aside class="lg:w-64 space-y-12">
                         <div class="space-y-6">
-                            <h4 class="text-[10px] uppercase tracking-[0.3em] text-gold">Perspective</h4>
+                            <h4 class="text-[10px] uppercase tracking-[0.3em] text-gold border-b border-white/10 pb-2">Perspective</h4>
                             <div class="space-y-3 flex flex-col items-start">
                                 <button onclick="setFilter('All')" class="text-xs opacity-40 hover:opacity-100 transition filter-btn active" data-filter="All" data-t="filter_all">All</button>
                                 <button onclick="setFilter('Men')" class="text-xs opacity-40 hover:opacity-100 transition filter-btn" data-filter="Men" data-t="filter_men">Men</button>
@@ -229,9 +304,19 @@
                                 <button onclick="setFilter('Unisex')" class="text-xs opacity-40 hover:opacity-100 transition filter-btn" data-filter="Unisex" data-t="filter_unisex">Unisex</button>
                             </div>
                         </div>
+                        
+                        <div class="space-y-6">
+                            <h4 class="text-[10px] uppercase tracking-[0.3em] text-gold border-b border-white/10 pb-2">Value (EGP)</h4>
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-3 text-xs opacity-60 hover:opacity-100 cursor-pointer"><input type="checkbox" onchange="togglePriceFilter(0, 1000)" class="accent-gold"> Under 1000 EGP</label>
+                                <label class="flex items-center gap-3 text-xs opacity-60 hover:opacity-100 cursor-pointer"><input type="checkbox" onchange="togglePriceFilter(1000, 1500)" class="accent-gold"> 1000 - 1500 EGP</label>
+                                <label class="flex items-center gap-3 text-xs opacity-60 hover:opacity-100 cursor-pointer"><input type="checkbox" onchange="togglePriceFilter(1500, 10000)" class="accent-gold"> Over 1500 EGP</label>
+                            </div>
+                        </div>
+
                         <!-- Recently Viewed -->
                         <div id="recent-viewed-section" class="space-y-6 hidden">
-                            <h4 class="text-[10px] uppercase tracking-[0.3em] text-gold opacity-50">Recently Viewed</h4>
+                            <h4 class="text-[10px] uppercase tracking-[0.3em] text-gold border-b border-white/10 pb-2">Recently Viewed</h4>
                             <div id="recent-viewed-list" class="space-y-4"></div>
                         </div>
                     </aside>
@@ -239,6 +324,15 @@
                     <!-- Inventory Grid -->
                     <div id="archive-grid" class="flex-grow grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"></div>
                 </div>
+            </div>
+        </section>
+        
+        <!-- 404 ERROR TAB -->
+        <section id="tab-404" class="page-tab">
+            <div class="h-screen flex flex-col items-center justify-center text-center px-8">
+                <h1 class="serif text-9xl text-gold mb-6">404</h1>
+                <p class="text-sm tracking-widest uppercase opacity-60 mb-10">The requested fragrance coordinates could not be located in the Vault.</p>
+                <button onclick="switchTab('home')" class="btn-gold">Return to Boutique</button>
             </div>
         </section>
     </main>
@@ -254,6 +348,12 @@
         </div>
         <div id="cart-items" class="flex-grow overflow-y-auto space-y-8 h-[55vh]"></div>
         <div class="mt-10 pt-10 border-t border-white/10 space-y-6">
+            <!-- Trust Badges -->
+            <div class="flex justify-center gap-6 opacity-30 mb-4">
+                <i data-lucide="shield-check" class="w-5 h-5"></i>
+                <i data-lucide="lock" class="w-5 h-5"></i>
+                <i data-lucide="credit-card" class="w-5 h-5"></i>
+            </div>
             <!-- Gift Wrap Toggle -->
             <label class="flex items-center gap-4 cursor-pointer">
                 <input type="checkbox" id="gift-wrap-toggle" onchange="toggleGiftWrapProtocol(this.checked)" class="accent-gold">
@@ -289,17 +389,20 @@
     <div id="product-modal" class="fixed inset-0 z-[3000] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/95 backdrop-blur-xl" onclick="closeProductModal()"></div>
         <div class="relative w-full max-w-6xl bg-primary border border-white/10 p-12 flex flex-col lg:flex-row gap-16 overflow-y-auto max-h-[90vh]">
-            <button onclick="closeProductModal()" class="absolute top-8 right-8 text-gold opacity-50 hover:opacity-100 transition"><i data-lucide="x"></i></button>
+            <button onclick="closeProductModal()" class="absolute top-8 right-8 text-gold opacity-50 hover:opacity-100 transition z-10"><i data-lucide="x"></i></button>
             
-            <div id="modal-img-container" class="lg:w-1/2 flex items-center justify-center bg-white/5 p-12 overflow-hidden">
-                <img id="m-img" src="" class="max-h-[500px] object-contain transition-transform duration-500 cursor-zoom-in">
+            <div id="modal-img-container" class="lg:w-1/2 flex items-center justify-center bg-white/5 p-12 overflow-hidden relative">
+                <img id="m-img" src="" loading="lazy" class="max-h-[400px] object-contain transition-transform duration-500 cursor-zoom-in">
             </div>
 
-            <div class="lg:w-1/2 space-y-10">
+            <div class="lg:w-1/2 space-y-8">
                 <div>
                     <p id="m-cat" class="text-[10px] tracking-[0.5em] text-gold uppercase mb-4"></p>
-                    <h3 id="m-name" class="serif text-6xl italic leading-tight mb-4"></h3>
-                    <p id="m-price" class="text-3xl text-gold italic"></p>
+                    <h3 id="m-name" class="serif text-5xl italic leading-tight mb-4"></h3>
+                    <div class="flex items-center gap-4">
+                        <p id="m-price" class="text-3xl text-gold italic"></p>
+                        <div class="flex text-gold text-[10px]"><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i> <span class="opacity-60 ml-2">(12 Reviews)</span></div>
+                    </div>
                 </div>
 
                 <div class="flex items-center gap-4 py-4 border-y border-white/5">
@@ -312,22 +415,42 @@
                     <div id="m-notes" class="flex flex-wrap gap-2"></div>
                 </div>
 
-                <div class="glass-card p-6 space-y-4">
-                    <p class="text-[10px] uppercase tracking-widest text-gold">Scent Layering Protocol</p>
-                    <p class="text-[11px] opacity-60 leading-relaxed">Pair with deep ambery base notes for evening intensity, or layer with white florals to illuminate the heart.</p>
+                <div class="flex gap-4 pt-4">
+                    <button onclick="addToCartFromModal()" class="btn-gold flex-grow py-5" data-t="quiz_acquire">Acquire Now</button>
+                    <button onclick="toggleWishlistModal()" id="m-wish-btn" class="p-5 border border-white/10 hover:border-gold transition"><i data-lucide="heart"></i></button>
                 </div>
+                
+                <div class="flex items-center gap-4 opacity-40 text-[9px] tracking-widest uppercase mt-4">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i> Guaranteed Authentic 
+                    <i data-lucide="refresh-ccw" class="w-4 h-4 ml-4"></i> 14-Day Returns
+                </div>
+                
+                <!-- Related Products Mini Carousel -->
+                <div class="pt-6 border-t border-white/10">
+                    <p class="text-[9px] uppercase tracking-widest text-gold mb-4">Complementary Pairings</p>
+                    <div id="m-related" class="flex gap-4 overflow-x-auto pb-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                <div class="flex gap-4">
-                    <button onclick="addToCartFromModal()" class="btn-gold flex-grow py-6" data-t="quiz_acquire">Acquire Now</button>
-                    <button onclick="toggleWishlistModal()" id="m-wish-btn" class="p-6 border border-white/10 hover:border-gold transition"><i data-lucide="heart"></i></button>
-                </div>
+    <!-- Newsletter Modal -->
+    <div id="newsletter-modal" class="fixed inset-0 z-[4000] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeNewsletter()"></div>
+        <div class="relative bg-primary border border-gold p-12 max-w-md w-full text-center">
+            <button onclick="closeNewsletter()" class="absolute top-4 right-4 text-gold opacity-50 hover:opacity-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h3 class="serif text-4xl mb-4 italic text-gold" data-t="newsletter_title">Join the Inner Circle</h3>
+            <p class="text-xs opacity-60 mb-8 leading-relaxed" data-t="newsletter_desc">Receive access to exclusive batches and olfactory insights.</p>
+            <div class="flex flex-col gap-4">
+                <input type="email" placeholder="Your coordinates (Email)" class="bg-black/20 border border-white/10 p-4 text-xs outline-none focus:border-gold text-center">
+                <button onclick="closeNewsletter(); showRandomSocialProof({name: 'Welcome to the Inner Circle', file: ''});" class="btn-gold w-full" data-t="newsletter_btn">Subscribe</button>
             </div>
         </div>
     </div>
 
     <!-- Floating UI -->
     <div id="social-proof">
-        <img id="sp-img" src="" class="w-12 h-12 object-contain bg-white p-1">
+        <img id="sp-img" src="" loading="lazy" class="w-12 h-12 object-contain bg-white p-1">
         <div class="text-[10px]">
             <p class="font-bold text-gold" id="sp-name"></p>
             <p id="sp-text" class="opacity-60"></p>
@@ -378,11 +501,26 @@
 
         window.onload = () => {
             initUI();
-            switchTab('home');
+            
+            // Check hash for 404 testing
+            if(window.location.hash === '#404') {
+                switchTab('404');
+            } else {
+                switchTab('home');
+            }
+
             setTimeout(() => {
                 document.getElementById('preloader').style.opacity = '0';
                 setTimeout(() => document.getElementById('preloader').style.display = 'none', 1000);
             }, 1500);
+            
+            // Newsletter Popup trigger
+            setTimeout(() => {
+                if(!localStorage.getItem('eccence_newsletter')) {
+                    document.getElementById('newsletter-modal').classList.remove('hidden');
+                    localStorage.setItem('eccence_newsletter', 'true');
+                }
+            }, 8000);
             
             // Social Proof Loop
             setInterval(showRandomSocialProof, 20000);
@@ -416,7 +554,7 @@
             currentLang = currentLang === 'en' ? 'ar' : 'en';
             localStorage.setItem('eccence_lang', currentLang);
             applyLanguage();
-            renderArchive(); // Refresh items in case translation affects labels
+            renderArchive();
         }
 
         function applyTheme() {
@@ -438,7 +576,6 @@
             document.getElementById('tab-' + tab).classList.add('active');
             
             document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('text-gold'));
-            // Scroll to top
             window.scrollTo(0,0);
             
             if(tab === 'archive') renderArchive();
@@ -453,18 +590,33 @@
             lucide.createIcons();
         }
 
-        // Feature: Archive Grid + Filters
+        // Feature: Archive Grid + Advanced Filters
         let activeFilter = 'All';
+        let priceFilters = [];
+        
         function setFilter(f) {
             activeFilter = f;
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === f));
             renderArchive();
         }
+        
+        function togglePriceFilter(min, max) {
+            const range = {min, max};
+            const existing = priceFilters.findIndex(r => r.min === min && r.max === max);
+            if(existing > -1) priceFilters.splice(existing, 1);
+            else priceFilters.push(range);
+            renderArchive();
+        }
 
         function renderArchive() {
             const grid = document.getElementById('archive-grid');
-            const items = activeFilter === 'All' ? inventory : inventory.filter(p => p.gender === activeFilter || p.gender === 'Unisex');
-            grid.innerHTML = items.map(p => productCard(p)).join('');
+            let items = activeFilter === 'All' ? inventory : inventory.filter(p => p.gender === activeFilter || p.gender === 'Unisex');
+            
+            if(priceFilters.length > 0) {
+                items = items.filter(p => priceFilters.some(r => p.price >= r.min && p.price < r.max));
+            }
+            
+            grid.innerHTML = items.length ? items.map(p => productCard(p)).join('') : '<p class="opacity-40 italic">No batches found for these coordinates.</p>';
             renderRecentlyViewed();
             lucide.createIcons();
         }
@@ -473,7 +625,7 @@
             return `
                 <div class="glass-card p-10 animate-fade" onclick="openProductModal(${p.id})">
                     <div class="relative aspect-square mb-10 overflow-hidden group">
-                        <img src="${p.file}" class="max-h-full mx-auto object-contain transition-transform duration-700 group-hover:scale-110">
+                        <img src="${p.file}" loading="lazy" class="max-h-full mx-auto object-contain transition-transform duration-700 group-hover:scale-110">
                         <button onclick="event.stopPropagation(); quickAcquire(${p.id})" class="absolute bottom-0 left-0 w-full bg-gold text-primary text-[9px] tracking-widest font-bold py-4 translate-y-full group-hover:translate-y-0 transition-transform">QUICK ACQUISITION</button>
                     </div>
                     <div class="space-y-2">
@@ -517,7 +669,7 @@
             }
             container.innerHTML = cart.map((item, idx) => `
                 <div class="flex gap-6 items-center border-b border-white/5 pb-8 animate-fade">
-                    <img src="${item.file}" class="w-16 h-16 bg-white object-contain p-2">
+                    <img src="${item.file}" loading="lazy" class="w-16 h-16 bg-white object-contain p-2">
                     <div class="flex-grow">
                         <h5 class="serif text-lg leading-tight">${item.name}</h5>
                         <p class="text-gold text-xs mt-1">${item.price} EGP</p>
@@ -560,8 +712,8 @@
                 return;
             }
             container.innerHTML = items.map(item => `
-                <div class="flex gap-6 items-center border-b border-white/5 pb-8" onclick="openProductModal(${item.id}); closeDrawers();">
-                    <img src="${item.file}" class="w-12 h-12 bg-white object-contain p-1">
+                <div class="flex gap-6 items-center border-b border-white/5 pb-8 cursor-pointer" onclick="openProductModal(${item.id}); closeDrawers();">
+                    <img src="${item.file}" loading="lazy" class="w-12 h-12 bg-white object-contain p-1">
                     <div>
                         <h5 class="serif text-md">${item.name}</h5>
                         <p class="text-gold text-[10px]">${item.price} EGP</p>
@@ -587,10 +739,19 @@
                 stockEl.classList.add('text-red-500');
             }
 
-            document.getElementById('m-notes').innerHTML = activeProduct.notes.map(n => `<span class="note-tag">${n}</span>`).join('');
+            document.getElementById('m-notes').innerHTML = activeProduct.notes.map(n => `<span class="note-tag border border-gold px-2 py-1 text-[8px] uppercase tracking-widest text-gold rounded-sm mr-2 mb-2 inline-block">${n}</span>`).join('');
             
             const wishBtn = document.getElementById('m-wish-btn');
             wishBtn.classList.toggle('text-gold', wishlist.includes(activeProduct.id));
+            
+            // Related Products
+            const related = inventory.filter(p => p.id !== activeProduct.id && (p.gender === activeProduct.gender || p.notes.some(n => activeProduct.notes.includes(n)))).slice(0, 3);
+            document.getElementById('m-related').innerHTML = related.map(p => `
+                <div class="min-w-[100px] cursor-pointer hover:border-gold border border-transparent transition" onclick="openProductModal(${p.id})">
+                    <img src="${p.file}" class="w-16 h-16 object-contain bg-white/5 mx-auto mb-2 p-2">
+                    <p class="text-[8px] text-center uppercase tracking-widest opacity-60 truncate px-1">${p.name}</p>
+                </div>
+            `).join('');
             
             document.getElementById('product-modal').classList.remove('hidden');
             addToRecentlyViewed(activeProduct);
@@ -622,7 +783,7 @@
             section.classList.remove('hidden');
             list.innerHTML = recent.map(p => `
                 <div class="flex gap-4 items-center cursor-pointer group" onclick="openProductModal(${p.id})">
-                    <img src="${p.file}" class="w-10 h-10 object-contain bg-white/5 border border-white/5 group-hover:border-gold transition">
+                    <img src="${p.file}" loading="lazy" class="w-10 h-10 object-contain bg-white/5 border border-white/5 group-hover:border-gold transition">
                     <p class="text-[10px] luxury-font group-hover:text-gold transition">${p.name}</p>
                 </div>
             `).join('');
@@ -640,10 +801,14 @@
             const container = document.getElementById('search-results');
             container.innerHTML = results.map(p => `
                 <div class="glass-card p-6 cursor-pointer" onclick="openProductModal(${p.id}); toggleSearch();">
-                    <img src="${p.file}" class="w-full h-32 object-contain mb-4">
+                    <img src="${p.file}" loading="lazy" class="w-full h-32 object-contain mb-4">
                     <p class="text-[9px] uppercase tracking-widest opacity-50 text-center">${p.name}</p>
                 </div>
             `).join('');
+        }
+
+        function closeNewsletter() {
+            document.getElementById('newsletter-modal').classList.add('hidden');
         }
 
         // Floating UI Functions
@@ -680,12 +845,17 @@
         const users = ["Julian from Monaco", "Sofia from Milan", "Omar from Cairo", "Aria from Tokyo", "Liam from London"];
         function showRandomSocialProof(product = null) {
             const sp = document.getElementById('social-proof');
-            const p = product || inventory[Math.floor(Math.random()*inventory.length)];
-            const user = users[Math.floor(Math.random()*users.length)];
-            
-            document.getElementById('sp-img').src = p.file;
-            document.getElementById('sp-name').innerText = user;
-            document.getElementById('sp-text').innerText = "Just acquired " + p.name;
+            if(product && product.file) {
+                document.getElementById('sp-img').src = product.file;
+                document.getElementById('sp-name').innerText = product.name || 'Inner Circle Member';
+                document.getElementById('sp-text').innerText = "Subscribed to Journal";
+            } else {
+                const p = inventory[Math.floor(Math.random()*inventory.length)];
+                const user = users[Math.floor(Math.random()*users.length)];
+                document.getElementById('sp-img').src = p.file;
+                document.getElementById('sp-name').innerText = user;
+                document.getElementById('sp-text').innerText = "Just acquired " + p.name;
+            }
             
             sp.classList.add('active');
             setTimeout(() => sp.classList.remove('active'), 5000);
