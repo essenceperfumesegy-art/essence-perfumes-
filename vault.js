@@ -38,7 +38,24 @@ const inventory = [
     { id: 36, name: "YSL Babycat", gender: "Men", file: "Yves Saint Laurent Babycat Eau de Parfum _ Nordstrom.jpg", price: 5500, old: 6500, notes: ["Vanilla", "Spicy", "Dark"], stock: 2 },
     { id: 37, name: "ADG Profondo", gender: "Men", file: "aqua di gio.jpg", price: 1800, old: 2400, notes: ["Sea Notes", "Fresh", "Executive"], stock: 4 },
     { id: 38, name: "Creed Aventus", gender: "Men", file: "Creedaventos.JPG", price: 7500, old: 9000, notes: ["Pineapple", "Woody", "Executive"], stock: 3 },
-    { id: 39, name: "Lattafa Asad", gender: "Men", file: "Lattafa Perfumes Asad for Unisex Eau de Parfum Spray, 3_4 Ounce.jpg", price: 950, old: 1300, notes: ["Spicy", "Amber", "Dark"], stock: 10 }
+    { id: 39, name: "Lattafa Asad", gender: "Men", file: "Lattafa Perfumes Asad for Unisex Eau de Parfum Spray, 3_4 Ounce.jpg", price: 950, old: 1300, notes: ["Spicy", "Amber", "Dark"], stock: 10 },
+    { id: 40, name: "Ajwad by Lattafa", gender: "Men", file: "Ajwad by Lattafa for Men - 2_04 oz EDP Spray.png", price: 750, old: 1050, notes: ["Woody", "Amber", "Dark"], stock: 8 },
+    { id: 41, name: "Black Diamond Incense", gender: "Unisex", file: "BLACK DIAMOND INCENSE IBRAHIM AL QURASHI _ IBRAQ PERFUME _ IBRAHEEM AL QURASHI.png", price: 3200, old: 4500, notes: ["Oud", "Incense", "Dark"], stock: 2 },
+    { id: 42, name: "Black Carbon Diamond", gender: "Men", file: "Black Carbon Diamond Edp 150ml By Ibraheem Al Qurashi.png", price: 2800, old: 3900, notes: ["Woody", "Spicy", "Dark", "Executive"], stock: 3 },
+    { id: 43, name: "Emerald Soul Diamond", gender: "Unisex", file: "EMERALD SOUL DIAMOND IBRAQ EDP 150ML.png", price: 3000, old: 4200, notes: ["Fresh", "Citrus", "Executive"], stock: 2 },
+    { id: 44, name: "Imperial Valley", gender: "Unisex", file: "Imperial Valley  200 ML  EDP   by Gissah _ Unisex 🔝🏆🔥💥 😍 ❤️ _ Best Seller _ eBay.png", price: 2500, old: 3500, notes: ["Amber", "Woody", "Dark"], stock: 4 },
+    { id: 45, name: "Lattafa Her Confession", gender: "Women", file: "Lattafa Her Confession - Vanilla, Floral, Amber, Musk.png", price: 680, old: 950, notes: ["Vanilla", "Floral", "Sweet"], stock: 7 },
+    { id: 46, name: "Lattafa His Confession", gender: "Men", file: "Lattafa Lattafa Men's His Confession EDP Spray 3_4 oz Fragrances 6290360599113.png", price: 680, old: 950, notes: ["Woody", "Spicy", "Executive"], stock: 7 },
+    { id: 47, name: "Lattafa Musamam Black", gender: "Men", file: "Lattafa Musamam Black Intense _ Eau de Parfum _ 100 ml.png", price: 850, old: 1200, notes: ["Oud", "Dark", "Spicy"], stock: 5 },
+    { id: 48, name: "Spanish Tobacco", gender: "Men", file: "Spanish Tobacco by Ibraheem Al_Qurashi - Review by___.png", price: 2600, old: 3600, notes: ["Tobacco", "Spicy", "Dark"], stock: 3 },
+    { id: 49, name: "Tom Ford Black Orchid", gender: "Women", file: "Tom Ford Black Orchid EDP for women, created by master perfumer Givaudan_.png", price: 3500, old: 4800, notes: ["Black Truffle", "Orchid", "Dark"], stock: 2 },
+    { id: 50, name: "Badee Al Oud Amethyst", gender: "Women", file: "essesce products/Badee Al Oud Amethyst Perfume.png", price: 720, old: 1000, notes: ["Floral", "Sweet", "Amber"], stock: 6 },
+    { id: 51, name: "Bulgari Man in Black", gender: "Men", file: "essesce products/Bulgari Man in Black.png", price: 1800, old: 2500, notes: ["Leather", "Spicy", "Dark", "Executive"], stock: 4 },
+    { id: 52, name: "Bade'e Al Oud Honor Glory", gender: "Men", file: "essesce products/Lattafa Bade'e Al Oud Honor Glory Edp 3_4 Oz.png", price: 750, old: 1050, notes: ["Woody", "Amber", "Dark"], stock: 6 },
+    { id: 53, name: "Bade'e Al Oud For Glory", gender: "Unisex", file: "essesce products/Lattafa Bade'e Al Oud Oud For Glory Eau De Parfum 100 ml (unisex).png", price: 700, old: 980, notes: ["Oud", "Woody", "Dark"], stock: 8 },
+    { id: 54, name: "Badee Al Oud Noble Blush", gender: "Women", file: "essesce products/Lattafa Perfumes - Badee Al Oud Noble Blush Eau De Parfum - 100 ml.png", price: 730, old: 1020, notes: ["Rose", "Floral", "Sweet"], stock: 5 },
+    { id: 55, name: "Tom Ford Lost Cherry", gender: "Women", file: "essesce products/L'eau de parfum Lost Cherry de TOM FORD est aussi tentante et amusante qu'un bonbon_ Ses effluves enivrants de cerise noire se mêlent à des notes d'amande amère_.png", price: 4200, old: 5800, notes: ["Cherry", "Almond", "Sweet"], stock: 2 },
+    { id: 56, name: "Pink Diamond Sakura", gender: "Women", file: "essesce products/Pink Diamond - Sakura 200ML by Ibrahim Al Qurashi _ Elegant Floral Fragrance with Long-Lasting Freshness - عطر بينك دايموند - ساكورا 200 مل من إبراهيم القرشي _ لمسة زهرية راقية وثبات يدوم طويلاً.png", price: 2200, old: 3100, notes: ["Floral", "Fresh", "Sweet"], stock: 3 }
 ];
 
 function getCart() { return JSON.parse(localStorage.getItem('eccence_cart') || '[]'); }
