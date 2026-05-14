@@ -405,9 +405,14 @@
                     </div>
                 </div>
 
-                <div class="flex items-center gap-4 py-4 border-y border-white/5">
+                <div class="flex items-center gap-4 py-4 border-t border-white/5">
                     <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
                     <p id="m-stock" class="text-[9px] uppercase tracking-widest opacity-60"></p>
+                </div>
+
+                <div id="m-variants-container" class="space-y-4 pb-4 border-b border-white/5 hidden">
+                    <p class="text-[9px] uppercase tracking-[0.3em] opacity-40">Select Volume</p>
+                    <div id="m-variants" class="flex gap-4"></div>
                 </div>
 
                 <div class="space-y-4">
@@ -498,6 +503,7 @@
         let currentTheme = localStorage.getItem('eccence_theme') || 'dark';
         let wishlist = JSON.parse(localStorage.getItem('eccence_wishlist') || '[]');
         let activeProduct = null;
+        let activeVariant = null;
 
         window.onload = () => {
             initUI();
@@ -725,10 +731,23 @@
         // Product Modal
         function openProductModal(id) {
             activeProduct = inventory.find(x => x.id === id);
+            activeVariant = activeProduct.variants ? activeProduct.variants[0] : null;
             document.getElementById('m-img').src = activeProduct.file;
             document.getElementById('m-name').innerText = activeProduct.name;
-            document.getElementById('m-price').innerText = activeProduct.price + " EGP";
+            updateModalPrice();
             document.getElementById('m-cat').innerText = activeProduct.gender;
+            
+            const variantContainer = document.getElementById('m-variants-container');
+            const variantsDiv = document.getElementById('m-variants');
+            if (activeProduct.variants) {
+                variantContainer.classList.remove('hidden');
+                variantsDiv.innerHTML = activeProduct.variants.map((v, i) => `
+                    <button onclick="selectModalVariant(${i}, this)" 
+                        class="variant-btn border border-white/10 px-4 py-2 text-[10px] transition hover:border-gold hover:text-gold ${i === 0 ? 'border-gold text-gold bg-gold/5' : ''}">${v.size}</button>
+                `).join('');
+            } else {
+                variantContainer.classList.add('hidden');
+            }
             
             const stockEl = document.getElementById('m-stock');
             if(activeProduct.stock > 0) {
@@ -770,8 +789,34 @@
             lucide.createIcons();
         }
 
+        function updateModalPrice() {
+            const price = activeVariant ? activeVariant.price : activeProduct.price;
+            document.getElementById('m-price').innerText = price + " EGP";
+        }
+        
+        function selectModalVariant(index, btn) {
+            activeVariant = activeProduct.variants[index];
+            updateModalPrice();
+            document.querySelectorAll('#m-variants .variant-btn').forEach(b => {
+                b.classList.remove('border-gold', 'text-gold', 'bg-gold/5');
+            });
+            btn.classList.add('border-gold', 'text-gold', 'bg-gold/5');
+        }
+
         function closeProductModal() { document.getElementById('product-modal').classList.add('hidden'); }
-        function addToCartFromModal() { quickAcquire(activeProduct.id); closeProductModal(); }
+        function addToCartFromModal() { 
+            if (activeVariant) {
+                const productToAdd = { ...activeProduct, price: activeVariant.price, name: activeProduct.name + " (" + activeVariant.size + ")" };
+                addToCart(productToAdd);
+                updateGlobalUI();
+                toggleDrawer('cart');
+                showRandomSocialProof(productToAdd);
+                closeProductModal();
+            } else {
+                quickAcquire(activeProduct.id); 
+                closeProductModal(); 
+            }
+        }
         function toggleWishlistModal() { toggleWishlist(activeProduct.id); document.getElementById('m-wish-btn').classList.toggle('text-gold', wishlist.includes(activeProduct.id)); }
 
         // Recently Viewed
